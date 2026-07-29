@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router';
+import { Link } from '@/components/NavLink';
 import { Button } from '@/components/ui';
 import { Home } from 'lucide-react';
 

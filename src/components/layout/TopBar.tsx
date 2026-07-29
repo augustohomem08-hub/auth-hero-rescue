@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation } from '@tanstack/react-router';
 import { NAV_ITEMS } from '@/config/navigation';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { Menu } from 'lucide-react';

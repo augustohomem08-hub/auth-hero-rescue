@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from '@/components/NavLink';
 import { Heart } from 'lucide-react';
 import { NAV_ITEMS } from '@/config/navigation';
 import { ThemeToggle } from '@/components/ThemeToggle';

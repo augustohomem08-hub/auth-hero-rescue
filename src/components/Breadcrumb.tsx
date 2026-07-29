@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router';
+import { Link } from '@/components/NavLink';
 import { ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 

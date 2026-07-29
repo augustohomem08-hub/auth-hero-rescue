@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from '@/components/NavLink';
 import { MoreHorizontal } from 'lucide-react';
 import { PRIMARY_NAV } from '@/config/navigation';
 import { cn } from '@/lib/utils';
