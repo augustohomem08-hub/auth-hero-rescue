@@ -66,9 +66,9 @@ export function AuthPage() {
         </div>
 
         {tab === 'signin' ? (
-          <SignInForm onDone={() => navigate('/')} onSwitchToSignup={() => setTab('signup')} />
+          <SignInForm onDone={() => navigate({ to: '/' })} onSwitchToSignup={() => setTab('signup')} />
         ) : (
-          <SignUpForm onDone={() => navigate('/')} onSwitchToSignin={() => setTab('signin')} />
+          <SignUpForm onDone={() => navigate({ to: '/' })} onSwitchToSignin={() => setTab('signin')} />
         )}
       </div>
     </div>

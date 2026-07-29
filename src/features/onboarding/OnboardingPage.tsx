@@ -80,9 +80,9 @@ export function OnboardingPage() {
         </div>
 
         {tab === 'create' ? (
-          <CreateProjectForm onDone={() => navigate('/')} />
+          <CreateProjectForm onDone={() => navigate({ to: '/' })} />
         ) : (
-          <JoinProjectForm onDone={() => navigate('/')} />
+          <JoinProjectForm onDone={() => navigate({ to: '/' })} />
         )}
       </div>
     </div>
