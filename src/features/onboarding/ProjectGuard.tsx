@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from '@tanstack/react-router';
 import { FullPageLoading } from '@/components/ui';
 import { useAuth } from '@/contexts/auth-context';
 import { useActiveProject } from '@/features/onboarding/useProjectMembership';
