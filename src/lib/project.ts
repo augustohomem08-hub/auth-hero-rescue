@@ -196,11 +196,15 @@ export async function joinProjectByCode(opts: {
     { p_code: normalized }
   );
 
-  if (lookupErr || !lookup) {
+  // The RPC returns a set of rows, so PostgREST hands back an array.
+  const projectId = Array.isArray(lookup)
+    ? (lookup[0] as { id: string } | undefined)?.id
+    : (lookup as { id: string } | null)?.id;
+
+  if (lookupErr || !projectId) {
     return { error: 'Código de convite inválido. Verifique e tente novamente.' };
   }
 
-  const projectId = (lookup as { id: string }).id;
 
   // Insert the membership. RLS allows this only via an existing owner; a
   // brand-new user joining is handled by the RPC insert_invited_member below
