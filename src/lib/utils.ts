@@ -1,4 +1,4 @@
-export type ClassValue = string | number | boolean | undefined | null | ClassValue[];
+export type ClassValue = string | number | bigint | boolean | undefined | null | ClassValue[];
 
 /**
  * Concatenates class values, dropping falsy values.
