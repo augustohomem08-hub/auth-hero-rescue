@@ -41,14 +41,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signUp = useCallback(async (email: string, password: string) => {
-    const { error } = await supabase.auth.signUp({ email, password });
-    return { error: error ? translateAuthError(error.message) : null };
+    const { data, error } = await supabase.auth.signUp({ email, password });
+    if (error) return { error: translateAuthError(error) };
+    // When e-mail confirmation is enabled no session is returned; tell the user
+    // instead of silently sending them to a screen that bounces back.
+    if (!data.session) {
+      return {
+        error: 'Conta criada! Confirme o e-mail enviado para você antes de entrar.',
+      };
+    }
+    return { error: null };
   }, []);
 
   const signIn = useCallback(async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error: error ? translateAuthError(error.message) : null };
+    return { error: error ? translateAuthError(error) : null };
   }, []);
+
 
   const signOut = useCallback(async () => {
     await supabase.auth.signOut();
