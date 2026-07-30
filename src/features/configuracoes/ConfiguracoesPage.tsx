@@ -1,7 +1,10 @@
+import { useState } from 'react';
+import { useNavigate } from '@tanstack/react-router';
 import { PageHeader } from '@/components/PageHeader';
 import { Card, CardHeader } from '@/components/ui';
 import { useTheme } from '@/contexts/theme-context';
-import { Moon, Sun, Heart, Bell, User, Shield } from 'lucide-react';
+import { useAuth } from '@/contexts/auth-context';
+import { Moon, Sun, Heart, Bell, User, Shield, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const APPEARANCE_OPTIONS = [
@@ -17,6 +20,20 @@ const PLACEHOLDER_SECTIONS = [
 
 export function ConfiguracoesPage() {
   const { theme, setTheme } = useTheme();
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+  const [signingOut, setSigningOut] = useState(false);
+
+  const handleSignOut = async () => {
+    setSigningOut(true);
+    try {
+      await signOut();
+      await navigate({ to: '/entrar', replace: true });
+    } finally {
+      setSigningOut(false);
+    }
+  };
+
 
   return (
     <div className="space-y-6 animate-fade-in">
