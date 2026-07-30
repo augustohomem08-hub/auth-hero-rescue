@@ -63,6 +63,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut();
     setSession(null);
     setStatus('unauthenticated');
+    // Drop every cached project/module query so the next account never sees
+    // the previous user's data while its queries refetch.
+    queryClient.clear();
   }, []);
 
   const value = useMemo(
