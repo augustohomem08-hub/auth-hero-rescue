@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { AuthError, Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
+import { queryClient } from '@/lib/queryClient';
 import { AuthContext } from './auth-context';
 import type { AuthStatus } from './auth-context';
 
