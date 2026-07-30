@@ -25,13 +25,19 @@ export function useRealtimeSync(
 ): void {
   const queryClient = useQueryClient();
   const keyRef = JSON.stringify(queryKey);
+  // A Supabase channel topic must be unique per subscription. Several hooks
+  // (or several mounted components using the same hook) can watch the same
+  // table at once; reusing a fixed topic name returns the already-subscribed
+  // channel and `.on()` then throws "cannot add postgres_changes callbacks
+  // after subscribe()". A per-hook-instance id keeps each topic distinct.
+  const instanceId = useId();
 
   useEffect(() => {
     if (!enabled) return;
     const parsedKey = JSON.parse(keyRef) as unknown[];
 
     const channel = supabase
-      .channel(`realtime:${table}`)
+      .channel(`realtime:${table}:${instanceId}`)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table },
@@ -44,7 +50,7 @@ export function useRealtimeSync(
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [table, keyRef, enabled, queryClient]);
+  }, [table, keyRef, enabled, instanceId, queryClient]);
 }
 
 
