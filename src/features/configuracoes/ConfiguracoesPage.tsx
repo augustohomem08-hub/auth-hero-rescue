@@ -113,7 +113,25 @@ export function ConfiguracoesPage() {
             );
           })}
         </ul>
+
+        <div className="mt-4 border-t border-surface-200/60 pt-4 dark:border-surface-800">
+          {user?.email && (
+            <p className="mb-3 truncate text-xs text-surface-500 dark:text-surface-400">
+              Conectado como <span className="font-medium">{user.email}</span>
+            </p>
+          )}
+          <button
+            type="button"
+            onClick={handleSignOut}
+            disabled={signingOut}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-danger-200 bg-danger-50 px-4 py-2.5 text-sm font-medium text-danger-700 transition-colors hover:bg-danger-100 disabled:opacity-60 dark:border-danger-900 dark:bg-danger-950 dark:text-danger-300"
+          >
+            <LogOut className="h-4 w-4" />
+            {signingOut ? 'Saindo…' : 'Sair da conta'}
+          </button>
+        </div>
       </Card>
+
 
       <Card className="border-0 bg-gradient-to-br from-primary-500 to-primary-700 text-white">
         <div className="flex items-center gap-3 p-5">
