@@ -9,6 +9,8 @@ interface BarChartProps {
   color?: string;
   /** Max value for the axis; auto-derived when omitted. */
   max?: number;
+  /** Optional value formatter (e.g. currency). Defaults to the raw number. */
+  formatValue?: (value: number) => string;
 }
 
 /**
@@ -16,7 +18,7 @@ interface BarChartProps {
  * whose width is a percentage of the max. The bars use currentColor so they
  * theme correctly in dark mode.
  */
-export function BarChart({ data, color = 'text-primary-500', max }: BarChartProps) {
+export function BarChart({ data, color = 'text-primary-500', max, formatValue }: BarChartProps) {
   const maxValue = max ?? Math.max(1, ...data.map((d) => d.value));
 
   if (data.length === 0) {
@@ -38,7 +40,7 @@ export function BarChart({ data, color = 'text-primary-500', max }: BarChartProp
                 {d.label}
               </span>
               <span className="font-medium text-surface-900 dark:text-surface-100">
-                {d.value}
+                {formatValue ? formatValue(d.value) : d.value}
               </span>
             </div>
             <div className="h-2 overflow-hidden rounded-full bg-surface-100 dark:bg-surface-800">
