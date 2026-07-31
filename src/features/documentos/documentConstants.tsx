@@ -5,7 +5,7 @@ import {
   User,
   File,
   BookText,
-  Map,
+  Map as MapIcon,
   Barcode,
   BadgeCheck,
   ShieldCheck,
@@ -25,7 +25,7 @@ export interface DocCategoryPreset {
 export const DOC_CATEGORIES: DocCategoryPreset[] = [
   { key: 'contract', label: 'Contrato', Icon: FileText, tone: 'primary' },
   { key: 'memorial', label: 'Memorial descritivo', Icon: BookText, tone: 'primary' },
-  { key: 'blueprint', label: 'Planta', Icon: Map, tone: 'secondary' },
+  { key: 'blueprint', label: 'Planta', Icon: MapIcon, tone: 'secondary' },
   { key: 'bill', label: 'Boleto', Icon: Barcode, tone: 'warning' },
   { key: 'receipt', label: 'Recibo', Icon: Receipt, tone: 'accent' },
   { key: 'proof', label: 'Comprovante', Icon: BadgeCheck, tone: 'success' },

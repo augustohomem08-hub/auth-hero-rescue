@@ -8,7 +8,19 @@ import type { DocumentCategory } from '@/types/documentos';
 
 const schema = z.object({
   title: z.string().min(1, 'Dê um título ao documento.').max(80, 'Máximo de 80 caracteres.'),
-  category: z.enum(['contract', 'receipt', 'certificate', 'personal', 'other']),
+  category: z.enum([
+    'contract',
+    'memorial',
+    'blueprint',
+    'bill',
+    'receipt',
+    'proof',
+    'warranty',
+    'manual',
+    'certificate',
+    'personal',
+    'other',
+  ]),
   expires_at: z.string().optional().or(z.literal('')),
 });
 
