@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { MoreVertical, Pencil, Trash2 } from 'lucide-react';
 import { Badge } from '@/components/ui';
 import { cn, formatDate } from '@/lib/utils';
+import { dueLabel, getDueState } from '@/lib/dateUtils';
 import { statusIcon, statusLabel, statusTone } from './milestoneConstants';
 import type { Milestone } from '@/types/cronograma';
 
@@ -15,6 +16,13 @@ interface MilestoneCardProps {
 /** Timeline-style milestone card with inline actions menu. */
 export function MilestoneCard({ milestone, isLast, onEdit, onDelete }: MilestoneCardProps) {
   const StatusIcon = statusIcon(milestone.status);
+  const dueState =
+    milestone.status === 'done' || milestone.status === 'cancelled'
+      ? 'none'
+      : getDueState(milestone.date);
+  const dueText = dueState === 'overdue' || dueState === 'today' || dueState === 'soon'
+    ? dueLabel(milestone.date)
+    : null;
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -99,8 +107,11 @@ export function MilestoneCard({ milestone, isLast, onEdit, onDelete }: Milestone
           </p>
         )}
 
-        <div className="mt-2">
+        <div className="mt-2 flex flex-wrap items-center gap-2">
           <Badge tone={statusTone(milestone.status)}>{statusLabel(milestone.status)}</Badge>
+          {dueText && (
+            <Badge tone={dueState === 'overdue' ? 'danger' : 'warning'}>{dueText}</Badge>
+          )}
         </div>
       </div>
     </li>
