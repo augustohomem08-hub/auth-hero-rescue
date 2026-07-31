@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { requireAuth } from "@/lib/routeGuards";
 import { AppShell } from "@/components/layout/AppShell";
 import { ComprasPage } from "@/features/compras/ComprasPage";
 
 export const Route = createFileRoute("/compras")({
   ssr: false,
+  beforeLoad: requireAuth,
   head: () => ({
     meta: [
       { title: "Compras · Nosso Primeiro Lar" },
