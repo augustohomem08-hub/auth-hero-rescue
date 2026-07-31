@@ -6,6 +6,7 @@ import { ModuleCards } from './ModuleCards';
 import { MembersCard } from './MembersCard';
 import { InvitationCard } from './InvitationCard';
 import { RecentActivity } from './RecentActivity';
+import { UpcomingDeadlines } from './UpcomingDeadlines';
 
 export function HomePage() {
   const { user } = useAuth();
@@ -29,6 +30,8 @@ export function HomePage() {
   return (
     <div className="space-y-6 animate-fade-in">
       <ProjectHero project={project} greeting={greeting} />
+
+      <UpcomingDeadlines />
 
       <ModuleCards />
 

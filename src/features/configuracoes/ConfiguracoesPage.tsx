@@ -6,6 +6,7 @@ import { useTheme } from '@/contexts/theme-context';
 import { useAuth } from '@/contexts/auth-context';
 import { Moon, Sun, Heart, Bell, User, Shield, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ExportCard } from './ExportCard';
 
 const APPEARANCE_OPTIONS = [
   { value: 'light' as const, label: 'Claro', icon: Sun },
@@ -132,6 +133,8 @@ export function ConfiguracoesPage() {
         </div>
       </Card>
 
+
+      <ExportCard />
 
       <Card className="border-0 bg-gradient-to-br from-primary-500 to-primary-700 text-white">
         <div className="flex items-center gap-3 p-5">
