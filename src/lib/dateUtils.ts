@@ -51,3 +51,52 @@ export function formatDeliveryDate(iso: string | null | undefined): string {
   if (!iso) return 'A definir';
   return formatDate(iso);
 }
+
+// ──────────────────────────────────────────────────────────────────────
+// Due-date proximity (lembretes visuais)
+// ──────────────────────────────────────────────────────────────────────
+
+/** Default window (in days) used for "vencendo em breve" indicators. */
+export const DUE_SOON_DAYS = 7;
+
+export type DueState = 'none' | 'overdue' | 'today' | 'soon' | 'later';
+
+/** Classify a date relative to today for reminder badges. */
+export function getDueState(
+  iso: string | null | undefined,
+  windowDays: number = DUE_SOON_DAYS
+): DueState {
+  if (!iso) return 'none';
+  const target = new Date(`${iso.slice(0, 10)}T00:00:00`);
+  if (Number.isNaN(target.getTime())) return 'none';
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const days = Math.round((target.getTime() - today.getTime()) / 86_400_000);
+  if (days < 0) return 'overdue';
+  if (days === 0) return 'today';
+  if (days <= windowDays) return 'soon';
+  return 'later';
+}
+
+/** Days remaining until an ISO date (negative when already past). */
+export function daysUntil(iso: string | null | undefined): number | null {
+  if (!iso) return null;
+  const target = new Date(`${iso.slice(0, 10)}T00:00:00`);
+  if (Number.isNaN(target.getTime())) return null;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return Math.round((target.getTime() - today.getTime()) / 86_400_000);
+}
+
+/** Short label for a due state, e.g. "Vence em 3 dias". */
+export function dueLabel(iso: string | null | undefined, windowDays = DUE_SOON_DAYS): string | null {
+  const state = getDueState(iso, windowDays);
+  const days = daysUntil(iso);
+  if (state === 'none' || state === 'later' || days === null) return null;
+  if (state === 'overdue') {
+    const d = Math.abs(days);
+    return `Venceu há ${d} ${d === 1 ? 'dia' : 'dias'}`;
+  }
+  if (state === 'today') return 'Vence hoje';
+  return `Vence em ${days} ${days === 1 ? 'dia' : 'dias'}`;
+}
