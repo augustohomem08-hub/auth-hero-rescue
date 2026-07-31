@@ -6,7 +6,13 @@
 
 export type DocumentCategory =
   | 'contract'
+  | 'memorial'
+  | 'blueprint'
+  | 'bill'
   | 'receipt'
+  | 'proof'
+  | 'warranty'
+  | 'manual'
   | 'certificate'
   | 'personal'
   | 'other';
