@@ -446,6 +446,12 @@ export type Database = {
         | "certificate"
         | "personal"
         | "other"
+        | "memorial"
+        | "blueprint"
+        | "bill"
+        | "proof"
+        | "warranty"
+        | "manual"
       item_priority: "low" | "medium" | "high"
       item_status:
         | "planned"
@@ -594,6 +600,12 @@ export const Constants = {
         "certificate",
         "personal",
         "other",
+        "memorial",
+        "blueprint",
+        "bill",
+        "proof",
+        "warranty",
+        "manual",
       ],
       item_priority: ["low", "medium", "high"],
       item_status: [
