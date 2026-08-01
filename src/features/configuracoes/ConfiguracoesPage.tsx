@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { useNavigate } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { PageHeader } from '@/components/PageHeader';
 import { Card, CardHeader } from '@/components/ui';
 import { useTheme } from '@/contexts/theme-context';
 import { useAuth } from '@/contexts/auth-context';
-import { Moon, Sun, Heart, Bell, User, Shield, LogOut } from 'lucide-react';
+import { Moon, Sun, Heart, Bell, User, Shield, LogOut, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ExportCard } from './ExportCard';
 
@@ -13,10 +13,25 @@ const APPEARANCE_OPTIONS = [
   { value: 'dark' as const, label: 'Escuro', icon: Moon },
 ];
 
-const PLACEHOLDER_SECTIONS = [
-  { icon: User, title: 'Perfil e conta', desc: 'Nome, e-mail e dados do casal.' },
-  { icon: Bell, title: 'Notificações', desc: 'Lembretes e avisos da jornada.' },
-  { icon: Shield, title: 'Privacidade', desc: 'Controle de acesso aos dados do lar.' },
+const ACCOUNT_SECTIONS = [
+  {
+    icon: User,
+    title: 'Perfil e conta',
+    desc: 'Nome de exibição e dados de acesso.',
+    to: '/configuracoes/perfil' as const,
+  },
+  {
+    icon: Bell,
+    title: 'Notificações',
+    desc: 'Lembretes e avisos da jornada.',
+    to: '/configuracoes/notificacoes' as const,
+  },
+  {
+    icon: Shield,
+    title: 'Privacidade',
+    desc: 'Controle de acesso aos dados do lar.',
+    to: '/configuracoes/privacidade' as const,
+  },
 ];
 
 export function ConfiguracoesPage() {
@@ -92,24 +107,27 @@ export function ConfiguracoesPage() {
       <Card>
         <CardHeader title="Conta" subtitle="Configurações da conta e preferências" />
         <ul className="mt-4 divide-y divide-surface-200/60 dark:divide-surface-800">
-          {PLACEHOLDER_SECTIONS.map((section) => {
+          {ACCOUNT_SECTIONS.map((section) => {
             const Icon = section.icon;
             return (
-              <li
-                key={section.title}
-                className="flex items-center gap-3 py-3.5 first:pt-0 last:pb-0"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface-100 text-surface-500 dark:bg-surface-800 dark:text-surface-400">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-surface-900 dark:text-surface-100">
-                    {section.title}
-                  </p>
-                  <p className="truncate text-xs text-surface-500 dark:text-surface-400">
-                    {section.desc}
-                  </p>
-                </div>
+              <li key={section.title}>
+                <Link
+                  to={section.to}
+                  className="flex w-full items-center gap-3 py-3.5 text-left transition-colors hover:bg-surface-50 dark:hover:bg-surface-800/60"
+                >
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface-100 text-surface-500 dark:bg-surface-800 dark:text-surface-400">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-surface-900 dark:text-surface-100">
+                      {section.title}
+                    </p>
+                    <p className="truncate text-xs text-surface-500 dark:text-surface-400">
+                      {section.desc}
+                    </p>
+                  </div>
+                  <ChevronRight className="h-4 w-4 shrink-0 text-surface-400" />
+                </Link>
               </li>
             );
           })}

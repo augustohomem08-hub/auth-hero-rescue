@@ -5,6 +5,7 @@ import { formatDate } from '@/lib/utils';
 import { dueLabel, getDueState, DUE_SOON_DAYS } from '@/lib/dateUtils';
 import { useMilestones } from '@/features/cronograma/useMilestones';
 import { statusLabel } from '@/features/cronograma/milestoneConstants';
+import { useNotificationPrefs } from '@/features/configuracoes/notificationPrefs';
 
 /**
  * In-app reminder card: milestones that are overdue or due within the next
@@ -12,13 +13,19 @@ import { statusLabel } from '@/features/cronograma/milestoneConstants';
  */
 export function UpcomingDeadlines() {
   const { data: milestones } = useMilestones();
+  const { prefs } = useNotificationPrefs();
 
   const alerts = (milestones ?? [])
     .filter((m) => m.status !== 'done' && m.status !== 'cancelled')
     .map((m) => ({ milestone: m, state: getDueState(m.date, DUE_SOON_DAYS) }))
-    .filter((a) => a.state === 'overdue' || a.state === 'today' || a.state === 'soon')
+    .filter((a) =>
+      a.state === 'overdue' ||
+      a.state === 'today' ||
+      (a.state === 'soon' && prefs.includeDueSoon)
+    )
     .sort((a, b) => (a.milestone.date ?? '').localeCompare(b.milestone.date ?? ''));
 
+  if (!prefs.deadlineAlerts) return null;
   if (alerts.length === 0) return null;
 
   return (

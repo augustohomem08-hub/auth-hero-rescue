@@ -61,14 +61,14 @@ export function Modal({
         role="dialog"
         aria-modal="true"
         className={cn(
-          'relative w-full rounded-t-2xl sm:rounded-2xl bg-white shadow-elevated',
+          'relative flex w-full max-h-[92dvh] flex-col rounded-t-2xl sm:rounded-2xl bg-white shadow-elevated',
           'dark:bg-surface-900 border border-surface-200 dark:border-surface-800',
           'animate-slide-up sm:animate-scale-in safe-pb',
           SIZES[size]
         )}
       >
         {(title || showClose) && (
-          <div className="flex items-start justify-between gap-4 p-5 pb-0">
+          <div className="flex shrink-0 items-start justify-between gap-4 p-5 pb-0">
             <div className="min-w-0">
               {title && (
                 <h2 className="text-lg font-semibold text-surface-900 dark:text-surface-100">
@@ -92,9 +92,11 @@ export function Modal({
             )}
           </div>
         )}
-        {children && <div className="p-5">{children}</div>}
+        {/* Body scrolls on its own so tall forms stay reachable on mobile,
+            where the page behind the modal has scrolling locked. */}
+        {children && <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-5">{children}</div>}
         {footer && (
-          <div className="flex items-center justify-end gap-2 border-t border-surface-200 dark:border-surface-800 p-5">
+          <div className="flex shrink-0 items-center justify-end gap-2 border-t border-surface-200 dark:border-surface-800 p-5">
             {footer}
           </div>
         )}
