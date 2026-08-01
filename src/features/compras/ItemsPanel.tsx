@@ -322,9 +322,17 @@ export function ItemsPanel({ selectedRoom }: ItemsPanelProps) {
 
 /** Map a thrown error to a user-friendly Portuguese message. */
 function toMessage(e: unknown): string {
-  const msg = e instanceof Error ? e.message : String(e);
-  if (/permission|denied|policy/i.test(msg)) {
-    return 'Sem permissão para esta ação no projeto.';
+  const err = e as { message?: string; details?: string; hint?: string; code?: string } | null;
+  const msg = err?.message ?? (e instanceof Error ? e.message : String(e));
+  if (/permission|denied|policy|row-level/i.test(msg)) {
+    return 'Sem permissão para esta ação no projeto. Confirme que você é membro do projeto.';
   }
-  return 'Não foi possível salvar. Tente novamente.';
+  if (/violates foreign key|room_id/i.test(msg)) {
+    return 'Ambiente inválido. Escolha um ambiente existente para o item.';
+  }
+  if (/network|fetch/i.test(msg)) {
+    return 'Falha de conexão. Verifique sua internet e tente novamente.';
+  }
+  // Surface the real backend message so failures are never silent.
+  return msg ? `Não foi possível salvar: ${msg}` : 'Não foi possível salvar. Tente novamente.';
 }
