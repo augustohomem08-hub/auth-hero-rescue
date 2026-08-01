@@ -18,6 +18,10 @@ import { Route as CronogramaRouteImport } from './routes/cronograma'
 import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as ComprasRouteImport } from './routes/compras'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ConfiguracoesIndexRouteImport } from './routes/configuracoes.index'
+import { Route as ConfiguracoesPrivacidadeRouteImport } from './routes/configuracoes.privacidade'
+import { Route as ConfiguracoesPerfilRouteImport } from './routes/configuracoes.perfil'
+import { Route as ConfiguracoesNotificacoesRouteImport } from './routes/configuracoes.notificacoes'
 
 const NovoRoute = NovoRouteImport.update({
   id: '/novo',
@@ -64,40 +68,73 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConfiguracoesIndexRoute = ConfiguracoesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ConfiguracoesRoute,
+} as any)
+const ConfiguracoesPrivacidadeRoute =
+  ConfiguracoesPrivacidadeRouteImport.update({
+    id: '/privacidade',
+    path: '/privacidade',
+    getParentRoute: () => ConfiguracoesRoute,
+  } as any)
+const ConfiguracoesPerfilRoute = ConfiguracoesPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => ConfiguracoesRoute,
+} as any)
+const ConfiguracoesNotificacoesRoute =
+  ConfiguracoesNotificacoesRouteImport.update({
+    id: '/notificacoes',
+    path: '/notificacoes',
+    getParentRoute: () => ConfiguracoesRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/compras': typeof ComprasRoute
-  '/configuracoes': typeof ConfiguracoesRoute
+  '/configuracoes': typeof ConfiguracoesRouteWithChildren
   '/cronograma': typeof CronogramaRoute
   '/documentos': typeof DocumentosRoute
   '/entrar': typeof EntrarRoute
   '/financeiro': typeof FinanceiroRoute
   '/jornada': typeof JornadaRoute
   '/novo': typeof NovoRoute
+  '/configuracoes/notificacoes': typeof ConfiguracoesNotificacoesRoute
+  '/configuracoes/perfil': typeof ConfiguracoesPerfilRoute
+  '/configuracoes/privacidade': typeof ConfiguracoesPrivacidadeRoute
+  '/configuracoes/': typeof ConfiguracoesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/compras': typeof ComprasRoute
-  '/configuracoes': typeof ConfiguracoesRoute
   '/cronograma': typeof CronogramaRoute
   '/documentos': typeof DocumentosRoute
   '/entrar': typeof EntrarRoute
   '/financeiro': typeof FinanceiroRoute
   '/jornada': typeof JornadaRoute
   '/novo': typeof NovoRoute
+  '/configuracoes/notificacoes': typeof ConfiguracoesNotificacoesRoute
+  '/configuracoes/perfil': typeof ConfiguracoesPerfilRoute
+  '/configuracoes/privacidade': typeof ConfiguracoesPrivacidadeRoute
+  '/configuracoes': typeof ConfiguracoesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/compras': typeof ComprasRoute
-  '/configuracoes': typeof ConfiguracoesRoute
+  '/configuracoes': typeof ConfiguracoesRouteWithChildren
   '/cronograma': typeof CronogramaRoute
   '/documentos': typeof DocumentosRoute
   '/entrar': typeof EntrarRoute
   '/financeiro': typeof FinanceiroRoute
   '/jornada': typeof JornadaRoute
   '/novo': typeof NovoRoute
+  '/configuracoes/notificacoes': typeof ConfiguracoesNotificacoesRoute
+  '/configuracoes/perfil': typeof ConfiguracoesPerfilRoute
+  '/configuracoes/privacidade': typeof ConfiguracoesPrivacidadeRoute
+  '/configuracoes/': typeof ConfiguracoesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,17 +148,24 @@ export interface FileRouteTypes {
     | '/financeiro'
     | '/jornada'
     | '/novo'
+    | '/configuracoes/notificacoes'
+    | '/configuracoes/perfil'
+    | '/configuracoes/privacidade'
+    | '/configuracoes/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/compras'
-    | '/configuracoes'
     | '/cronograma'
     | '/documentos'
     | '/entrar'
     | '/financeiro'
     | '/jornada'
     | '/novo'
+    | '/configuracoes/notificacoes'
+    | '/configuracoes/perfil'
+    | '/configuracoes/privacidade'
+    | '/configuracoes'
   id:
     | '__root__'
     | '/'
@@ -133,12 +177,16 @@ export interface FileRouteTypes {
     | '/financeiro'
     | '/jornada'
     | '/novo'
+    | '/configuracoes/notificacoes'
+    | '/configuracoes/perfil'
+    | '/configuracoes/privacidade'
+    | '/configuracoes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ComprasRoute: typeof ComprasRoute
-  ConfiguracoesRoute: typeof ConfiguracoesRoute
+  ConfiguracoesRoute: typeof ConfiguracoesRouteWithChildren
   CronogramaRoute: typeof CronogramaRoute
   DocumentosRoute: typeof DocumentosRoute
   EntrarRoute: typeof EntrarRoute
@@ -212,13 +260,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/configuracoes/': {
+      id: '/configuracoes/'
+      path: '/'
+      fullPath: '/configuracoes/'
+      preLoaderRoute: typeof ConfiguracoesIndexRouteImport
+      parentRoute: typeof ConfiguracoesRoute
+    }
+    '/configuracoes/privacidade': {
+      id: '/configuracoes/privacidade'
+      path: '/privacidade'
+      fullPath: '/configuracoes/privacidade'
+      preLoaderRoute: typeof ConfiguracoesPrivacidadeRouteImport
+      parentRoute: typeof ConfiguracoesRoute
+    }
+    '/configuracoes/perfil': {
+      id: '/configuracoes/perfil'
+      path: '/perfil'
+      fullPath: '/configuracoes/perfil'
+      preLoaderRoute: typeof ConfiguracoesPerfilRouteImport
+      parentRoute: typeof ConfiguracoesRoute
+    }
+    '/configuracoes/notificacoes': {
+      id: '/configuracoes/notificacoes'
+      path: '/notificacoes'
+      fullPath: '/configuracoes/notificacoes'
+      preLoaderRoute: typeof ConfiguracoesNotificacoesRouteImport
+      parentRoute: typeof ConfiguracoesRoute
+    }
   }
 }
+
+interface ConfiguracoesRouteChildren {
+  ConfiguracoesNotificacoesRoute: typeof ConfiguracoesNotificacoesRoute
+  ConfiguracoesPerfilRoute: typeof ConfiguracoesPerfilRoute
+  ConfiguracoesPrivacidadeRoute: typeof ConfiguracoesPrivacidadeRoute
+  ConfiguracoesIndexRoute: typeof ConfiguracoesIndexRoute
+}
+
+const ConfiguracoesRouteChildren: ConfiguracoesRouteChildren = {
+  ConfiguracoesNotificacoesRoute: ConfiguracoesNotificacoesRoute,
+  ConfiguracoesPerfilRoute: ConfiguracoesPerfilRoute,
+  ConfiguracoesPrivacidadeRoute: ConfiguracoesPrivacidadeRoute,
+  ConfiguracoesIndexRoute: ConfiguracoesIndexRoute,
+}
+
+const ConfiguracoesRouteWithChildren = ConfiguracoesRoute._addFileChildren(
+  ConfiguracoesRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ComprasRoute: ComprasRoute,
-  ConfiguracoesRoute: ConfiguracoesRoute,
+  ConfiguracoesRoute: ConfiguracoesRouteWithChildren,
   CronogramaRoute: CronogramaRoute,
   DocumentosRoute: DocumentosRoute,
   EntrarRoute: EntrarRoute,
