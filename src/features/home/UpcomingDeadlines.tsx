@@ -12,13 +12,19 @@ import { statusLabel } from '@/features/cronograma/milestoneConstants';
  */
 export function UpcomingDeadlines() {
   const { data: milestones } = useMilestones();
+  const { prefs } = useNotificationPrefs();
 
   const alerts = (milestones ?? [])
     .filter((m) => m.status !== 'done' && m.status !== 'cancelled')
     .map((m) => ({ milestone: m, state: getDueState(m.date, DUE_SOON_DAYS) }))
-    .filter((a) => a.state === 'overdue' || a.state === 'today' || a.state === 'soon')
+    .filter((a) =>
+      a.state === 'overdue' ||
+      a.state === 'today' ||
+      (a.state === 'soon' && prefs.includeDueSoon)
+    )
     .sort((a, b) => (a.milestone.date ?? '').localeCompare(b.milestone.date ?? ''));
 
+  if (!prefs.deadlineAlerts) return null;
   if (alerts.length === 0) return null;
 
   return (
