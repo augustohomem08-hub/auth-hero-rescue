@@ -13,10 +13,25 @@ const APPEARANCE_OPTIONS = [
   { value: 'dark' as const, label: 'Escuro', icon: Moon },
 ];
 
-const PLACEHOLDER_SECTIONS = [
-  { icon: User, title: 'Perfil e conta', desc: 'Nome, e-mail e dados do casal.' },
-  { icon: Bell, title: 'Notificações', desc: 'Lembretes e avisos da jornada.' },
-  { icon: Shield, title: 'Privacidade', desc: 'Controle de acesso aos dados do lar.' },
+const ACCOUNT_SECTIONS = [
+  {
+    icon: User,
+    title: 'Perfil e conta',
+    desc: 'Nome de exibição e dados de acesso.',
+    to: '/configuracoes/perfil' as const,
+  },
+  {
+    icon: Bell,
+    title: 'Notificações',
+    desc: 'Lembretes e avisos da jornada.',
+    to: '/configuracoes/notificacoes' as const,
+  },
+  {
+    icon: Shield,
+    title: 'Privacidade',
+    desc: 'Controle de acesso aos dados do lar.',
+    to: '/configuracoes/privacidade' as const,
+  },
 ];
 
 export function ConfiguracoesPage() {
