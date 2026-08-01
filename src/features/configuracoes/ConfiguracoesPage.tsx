@@ -107,24 +107,27 @@ export function ConfiguracoesPage() {
       <Card>
         <CardHeader title="Conta" subtitle="Configurações da conta e preferências" />
         <ul className="mt-4 divide-y divide-surface-200/60 dark:divide-surface-800">
-          {PLACEHOLDER_SECTIONS.map((section) => {
+          {ACCOUNT_SECTIONS.map((section) => {
             const Icon = section.icon;
             return (
-              <li
-                key={section.title}
-                className="flex items-center gap-3 py-3.5 first:pt-0 last:pb-0"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface-100 text-surface-500 dark:bg-surface-800 dark:text-surface-400">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-surface-900 dark:text-surface-100">
-                    {section.title}
-                  </p>
-                  <p className="truncate text-xs text-surface-500 dark:text-surface-400">
-                    {section.desc}
-                  </p>
-                </div>
+              <li key={section.title}>
+                <Link
+                  to={section.to}
+                  className="flex w-full items-center gap-3 py-3.5 text-left transition-colors hover:bg-surface-50 dark:hover:bg-surface-800/60"
+                >
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface-100 text-surface-500 dark:bg-surface-800 dark:text-surface-400">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-surface-900 dark:text-surface-100">
+                      {section.title}
+                    </p>
+                    <p className="truncate text-xs text-surface-500 dark:text-surface-400">
+                      {section.desc}
+                    </p>
+                  </div>
+                  <ChevronRight className="h-4 w-4 shrink-0 text-surface-400" />
+                </Link>
               </li>
             );
           })}
