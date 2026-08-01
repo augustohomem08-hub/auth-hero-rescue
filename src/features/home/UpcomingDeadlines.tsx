@@ -5,6 +5,7 @@ import { formatDate } from '@/lib/utils';
 import { dueLabel, getDueState, DUE_SOON_DAYS } from '@/lib/dateUtils';
 import { useMilestones } from '@/features/cronograma/useMilestones';
 import { statusLabel } from '@/features/cronograma/milestoneConstants';
+import { useNotificationPrefs } from '@/features/configuracoes/notificationPrefs';
 
 /**
  * In-app reminder card: milestones that are overdue or due within the next
