@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { useNavigate } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { PageHeader } from '@/components/PageHeader';
 import { Card, CardHeader } from '@/components/ui';
 import { useTheme } from '@/contexts/theme-context';
 import { useAuth } from '@/contexts/auth-context';
-import { Moon, Sun, Heart, Bell, User, Shield, LogOut } from 'lucide-react';
+import { Moon, Sun, Heart, Bell, User, Shield, LogOut, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ExportCard } from './ExportCard';
 
