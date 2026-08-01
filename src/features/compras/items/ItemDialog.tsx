@@ -168,6 +168,7 @@ export function ItemDialog({
   };
 
   const submit = (values: ItemFormValues) => {
+    setInvalid(false);
     onSubmit({
       room_id: values.room_id,
       name: values.name,
@@ -186,6 +187,18 @@ export function ItemDialog({
     });
   };
 
+  // Surfaces a visible banner when the form is blocked by validation —
+  // otherwise the submit button appears to do nothing on small screens where
+  // the offending field is scrolled out of view.
+  const onInvalid = () => {
+    setInvalid(true);
+    formRef.current
+      ?.querySelector<HTMLElement>('[data-error="true"], [aria-invalid="true"]')
+      ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  const noRooms = rooms.length === 0;
+
   return (
     <Modal
       open={open}
@@ -198,13 +211,35 @@ export function ItemDialog({
           <Button variant="ghost" size="md" onClick={onClose} disabled={isSubmitting}>
             Cancelar
           </Button>
-          <Button type="submit" size="md" isLoading={isSubmitting} onClick={handleSubmit(submit)}>
+          <Button
+            type="submit"
+            size="md"
+            isLoading={isSubmitting}
+            disabled={noRooms}
+            onClick={handleSubmit(submit, onInvalid)}
+          >
             {submitLabel}
           </Button>
         </>
       }
     >
-      <form onSubmit={handleSubmit(submit)} className="space-y-4">
+      <form ref={formRef} onSubmit={handleSubmit(submit, onInvalid)} className="space-y-4">
+        {noRooms && (
+          <p className="rounded-lg border border-warning-300 bg-warning-100 px-3 py-2 text-sm font-medium text-warning-900 dark:border-warning-700 dark:bg-warning-900/40 dark:text-warning-100">
+            Você ainda não tem ambientes. Crie um ambiente (ex.: Cozinha) antes de
+            adicionar itens.
+          </p>
+        )}
+
+        {invalid && Object.keys(errors).length > 0 && (
+          <p
+            role="alert"
+            className="rounded-lg border border-danger-300 bg-danger-100 px-3 py-2 text-sm font-medium text-danger-900 dark:border-danger-700 dark:bg-danger-900/40 dark:text-danger-100"
+          >
+            Revise os campos destacados para continuar.
+          </p>
+        )}
+
         {/* Image uploader */}
         <div>
           {imageUrl ? (
