@@ -97,13 +97,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+/**
+ * Applies the stored theme to <html> BEFORE React hydrates, so the `dark`
+ * class matches the user's preference on the very first paint. Without this
+ * the server always renders the light shell and the client only flips the
+ * class in an effect, which briefly renders dark-mode text on light
+ * backgrounds (and vice-versa).
+ */
+const THEME_BOOTSTRAP = `(function(){try{var t=localStorage.getItem('npl-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.classList.toggle('dark',t==='dark');document.documentElement.dataset.theme=t;}catch(e){}})();`;
+
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" suppressHydrationWarning>
       <head>
         <HeadContent />
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         {children}
         <Scripts />
       </body>
