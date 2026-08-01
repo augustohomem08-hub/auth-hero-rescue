@@ -114,6 +114,7 @@ export function ItemDialog({
   // Sync defaults when the dialog opens or the target item changes.
   useEffect(() => {
     if (open) {
+      setInvalid(false);
       reset({
         name: initial?.name ?? '',
         room_id: initial?.room_id ?? rooms[0]?.id ?? '',
