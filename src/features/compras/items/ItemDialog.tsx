@@ -80,6 +80,8 @@ export function ItemDialog({
   onSubmit,
 }: ItemDialogProps) {
   const { user } = useAuth();
+  const formRef = useRef<HTMLFormElement>(null);
+  const [invalid, setInvalid] = useState(false);
   const [imagePath, setImagePath] = useState<string | null>(initial?.image ?? null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [imageUploading, setImageUploading] = useState(false);
