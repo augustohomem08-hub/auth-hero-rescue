@@ -61,7 +61,7 @@ export function Modal({
         role="dialog"
         aria-modal="true"
         className={cn(
-          'relative w-full rounded-t-2xl sm:rounded-2xl bg-white shadow-elevated',
+          'relative flex w-full max-h-[92dvh] flex-col rounded-t-2xl sm:rounded-2xl bg-white shadow-elevated',
           'dark:bg-surface-900 border border-surface-200 dark:border-surface-800',
           'animate-slide-up sm:animate-scale-in safe-pb',
           SIZES[size]
