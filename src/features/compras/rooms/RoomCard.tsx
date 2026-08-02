@@ -15,7 +15,7 @@ interface RoomCardProps {
 }
 
 /** A selectable room tile with an inline actions menu (edit / delete). */
-export function RoomCard({ room, selected, onSelect, onEdit, onDelete }: RoomCardProps) {
+export function RoomCard({ room, itemCount, selected, onSelect, onEdit, onDelete }: RoomCardProps) {
   const Icon = roomIcon(room.icon);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
