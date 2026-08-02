@@ -7,7 +7,13 @@ import { useRooms } from '@/features/compras/rooms/useRooms';
 import { useMilestones } from '@/features/cronograma/useMilestones';
 import { useDocuments } from '@/features/documentos/useDocuments';
 import { useActiveProject } from '@/features/onboarding/useProjectMembership';
-import { exportBackupJson, exportItemsCsv, exportTransactionsCsv } from '@/lib/exporters';
+import {
+  exportBackupJson,
+  exportItemsCsv,
+  exportItemsXlsx,
+  exportTransactionsCsv,
+  exportTransactionsXlsx,
+} from '@/lib/exporters';
 
 /**
  * Data export panel: CSV per module plus a complete JSON backup.
