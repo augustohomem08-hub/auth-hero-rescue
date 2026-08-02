@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase';
+import { getSignedUrl } from '@/lib/storage';
 import type { Item } from '@/types/purchases';
 
 /**
@@ -158,4 +159,12 @@ export async function moveItems(itemIds: string[], toRoomId: string): Promise<vo
     .update({ room_id: toRoomId })
     .in('id', itemIds);
   if (error) throw error;
+}
+
+/**
+ * Resolve an item's `image` storage path (private `images` bucket) to a
+ * temporary signed URL for rendering. Mirrors the documents/memories helpers.
+ */
+export async function getItemImageSignedUrl(storagePath: string): Promise<string> {
+  return getSignedUrl('images', storagePath);
 }

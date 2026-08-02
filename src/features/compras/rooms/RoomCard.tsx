@@ -66,7 +66,7 @@ export function RoomCard({ room, selected, onSelect, onEdit, onDelete }: RoomCar
           type="button"
           aria-label="Opções"
           onClick={() => setMenuOpen((v) => !v)}
-          className="rounded-lg p-1.5 text-surface-400 opacity-0 transition-opacity hover:bg-surface-100 hover:text-surface-700 group-hover:opacity-100 dark:hover:bg-surface-800 dark:hover:text-surface-200"
+          className="rounded-lg p-1.5 text-surface-400 opacity-100 transition-opacity hover:bg-surface-100 hover:text-surface-700 lg:opacity-0 lg:group-hover:opacity-100 dark:hover:bg-surface-800 dark:hover:text-surface-200"
         >
           <MoreVertical className="h-4 w-4" />
         </button>
