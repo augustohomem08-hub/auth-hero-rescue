@@ -115,6 +115,7 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body suppressHydrationWarning>
         {children}
+        <Toaster position="top-center" richColors />
         <Scripts />
       </body>
     </html>
