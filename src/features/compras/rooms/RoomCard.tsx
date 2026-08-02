@@ -6,6 +6,8 @@ import type { Room } from '@/types/purchases';
 
 interface RoomCardProps {
   room: Room;
+  /** How many items belong to this room (from the shared items cache). */
+  itemCount: number;
   selected: boolean;
   onSelect: (room: Room) => void;
   onEdit: (room: Room) => void;
