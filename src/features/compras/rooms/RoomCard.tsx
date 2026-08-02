@@ -58,7 +58,7 @@ export function RoomCard({ room, itemCount, selected, onSelect, onEdit, onDelete
           {room.name}
         </span>
         <span className="block text-xs text-surface-400 dark:text-surface-500">
-          Itens em breve
+          {itemCount === 0 ? 'Nenhum item ainda' : `${itemCount} ${itemCount === 1 ? 'item' : 'itens'}`}
         </span>
       </span>
 
