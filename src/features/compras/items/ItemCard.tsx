@@ -30,7 +30,21 @@ export function ItemCard({
 }: ItemCardProps) {
   const Icon = categoryIcon(item.category);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // Resolve the private storage path to a signed URL for the thumbnail.
+  useEffect(() => {
+    let active = true;
+    if (!item.image) {
+      setImageUrl(null);
+      return;
+    }
+    getItemImageSignedUrl(item.image)
+      .then((url) => { if (active) setImageUrl(url); })
+      .catch(() => { if (active) setImageUrl(null); });
+    return () => { active = false; };
+  }, [item.image]);
 
   useEffect(() => {
     if (!menuOpen) return;
