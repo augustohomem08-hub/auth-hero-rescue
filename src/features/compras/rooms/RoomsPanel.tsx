@@ -124,11 +124,27 @@ export function RoomsPanel({ selectedRoomId, onSelectRoom, onClearSelection }: R
             onRetry={() => refetch()}
           />
         ) : rooms && rooms.length > 0 ? (
-          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+          <>
+            <div className="mb-3 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={onClearSelection}
+                className={cn(
+                  'rounded-full border px-3 py-1.5 text-xs font-medium transition-colors',
+                  selectedRoomId === null
+                    ? 'border-primary-400 bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-200'
+                    : 'border-surface-200 text-surface-600 hover:border-surface-300 dark:border-surface-700 dark:text-surface-300'
+                )}
+              >
+                Todos os itens{items ? ` (${items.length})` : ''}
+              </button>
+            </div>
+            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
             {rooms.map((room) => (
               <RoomCard
                 key={room.id}
                 room={room}
+                itemCount={countByRoom.get(room.id) ?? 0}
                 selected={selectedRoomId === room.id}
                 onSelect={onSelectRoom}
                 onEdit={(r) => setDialog({ kind: 'edit', room: r })}
