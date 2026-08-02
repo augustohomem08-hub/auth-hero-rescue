@@ -96,17 +96,17 @@ function MetaItem({
 }) {
   return (
     <div className="flex items-center gap-3 px-0 py-3 sm:px-4 sm:py-0 sm:first:pl-0 sm:last:pr-0">
-      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary-100 text-primary-600 dark:bg-primary-900/40 dark:text-primary-300">
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary-900/40 text-primary-200">
         {icon}
       </span>
       <div className="min-w-0">
-        <p className="text-xs uppercase tracking-wide text-surface-500 dark:text-surface-400">{label}</p>
+        {/* The meta strip always sits on the dark hero surface, so its text
+            colors are intentionally theme-independent. */}
+        <p className="text-xs uppercase tracking-wide text-surface-400">{label}</p>
         <p
           className={
             'truncate text-sm font-medium ' +
-            (highlight
-              ? 'text-primary-700 dark:text-primary-300'
-              : 'text-surface-900 dark:text-surface-100')
+            (highlight ? 'text-primary-300' : 'text-surface-100')
           }
         >
           {value}
