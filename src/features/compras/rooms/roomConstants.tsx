@@ -61,7 +61,7 @@ export const ROOM_COLORS: RoomColorPreset[] = [
   { key: 'accent', label: 'Areia', swatch: 'bg-accent-300', chip: 'bg-accent-100 text-accent-700 dark:bg-accent-900/40 dark:text-accent-300' },
 ];
 
-const ICON_MAP = new Map(ROOM_ICONS.map((p) => [p.key, p.Icon]));
+const ICON_MAP = new Map(ALL_ROOM_ICONS.map((p) => [p.key, p.Icon]));
 const COLOR_MAP = new Map(ROOM_COLORS.map((p) => [p.key, p]));
 
 /** Resolve an icon key to its component (falls back to Home). */
