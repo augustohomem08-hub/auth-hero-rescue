@@ -38,6 +38,18 @@
   --color-secondary-900: #263a25;
   --color-secondary-950: #132013;
 
+  --color-info-50: #f2f6f8;
+  --color-info-100: #e0eaef;
+  --color-info-200: #c4d7e0;
+  --color-info-300: #9dbccb;
+  --color-info-400: #749eb2;
+  --color-info-500: #578399;
+  --color-info-600: #476b7f;
+  --color-info-700: #3c5768;
+  --color-info-800: #354a57;
+  --color-info-900: #2f3f4a;
+  --color-info-950: #1b262e;
+
   --color-accent-50: #fbf7ec;
   --color-accent-100: #f6edcc;
   --color-accent-200: #edd896;
