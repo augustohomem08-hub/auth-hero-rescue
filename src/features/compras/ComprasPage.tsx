@@ -52,7 +52,10 @@ export function ComprasPage() {
         <div className="lg:col-span-1">
           <RoomsPanel
             selectedRoomId={selectedRoom?.id ?? null}
-            onSelectRoom={setSelectedRoom}
+            onSelectRoom={(room) =>
+              setSelectedRoom((prev) => (prev?.id === room.id ? null : room))
+            }
+            onClearSelection={() => setSelectedRoom(null)}
           />
         </div>
         <div className="lg:col-span-2">
