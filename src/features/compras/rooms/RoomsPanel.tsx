@@ -151,7 +151,8 @@ export function RoomsPanel({ selectedRoomId, onSelectRoom, onClearSelection }: R
                 onDelete={(r) => setDialog({ kind: 'delete', room: r })}
               />
             ))}
-          </div>
+            </div>
+          </>
         ) : (
           <EmptyPurchasesState
             icon={<Sofa className="h-7 w-7" />}
