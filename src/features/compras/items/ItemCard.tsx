@@ -73,13 +73,17 @@ export function ItemCard({
 
       {/* Thumbnail / icon */}
       <div className="flex w-12 shrink-0 items-start">
-        {item.image ? (
-          <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-lg bg-surface-100 dark:bg-surface-800">
-            <ImageIcon className="h-5 w-5 text-surface-400" />
-          </div>
+        {item.image && imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={item.name}
+            loading="lazy"
+            onError={() => setImageUrl(null)}
+            className="h-12 w-12 rounded-lg object-cover"
+          />
         ) : (
           <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-surface-100 text-surface-400 dark:bg-surface-800">
-            <Icon className="h-5 w-5" />
+            {item.image ? <ImageIcon className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
           </div>
         )}
       </div>
