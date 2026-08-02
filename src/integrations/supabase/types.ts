@@ -67,6 +67,7 @@ export type Database = {
       items: {
         Row: {
           category: string | null
+          celebrated_at: string | null
           created_at: string
           description: string | null
           estimated_price: number | null
@@ -87,6 +88,7 @@ export type Database = {
         }
         Insert: {
           category?: string | null
+          celebrated_at?: string | null
           created_at?: string
           description?: string | null
           estimated_price?: number | null
@@ -107,6 +109,7 @@ export type Database = {
         }
         Update: {
           category?: string | null
+          celebrated_at?: string | null
           created_at?: string
           description?: string | null
           estimated_price?: number | null
