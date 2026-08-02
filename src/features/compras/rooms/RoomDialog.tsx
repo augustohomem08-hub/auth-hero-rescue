@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Modal, Button, Input } from '@/components/ui';
-import { ROOM_COLORS, ROOM_ICONS, roomSwatch } from './roomConstants';
+import { ALL_ROOM_ICONS, ROOM_COLORS, ROOM_ICONS, ROOM_ICONS_EXTRA, roomSwatch } from './roomConstants';
 
 const schema = z.object({
   name: z
@@ -67,6 +67,10 @@ export function RoomDialog({
   }, [open, room, reset]);
 
   const selectedIcon = watch('icon');
+  const [showMoreIcons, setShowMoreIcons] = useState(
+    ROOM_ICONS_EXTRA.some((p) => p.key === room?.icon)
+  );
+  const visibleIcons = showMoreIcons ? ALL_ROOM_ICONS : ROOM_ICONS;
   const selectedColor = watch('color');
 
   return (
@@ -107,7 +111,7 @@ export function RoomDialog({
             Ícone
           </p>
           <div className="grid grid-cols-5 gap-2 sm:grid-cols-10">
-            {ROOM_ICONS.map((preset) => {
+            {visibleIcons.map((preset) => {
               const Icon = preset.Icon;
               const active = selectedIcon === preset.key;
               return (
@@ -129,6 +133,15 @@ export function RoomDialog({
               );
             })}
           </div>
+          {!showMoreIcons && (
+            <button
+              type="button"
+              onClick={() => setShowMoreIcons(true)}
+              className="mt-2 text-xs font-medium text-primary-600 hover:underline dark:text-primary-300"
+            >
+              Mais ícones
+            </button>
+          )}
         </div>
 
         {/* Color picker */}

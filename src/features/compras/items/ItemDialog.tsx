@@ -7,7 +7,6 @@ import { Modal, Button, Input, Textarea, Select } from '@/components/ui';
 import { useAuth } from '@/contexts/auth-context';
 import { uploadFile, deleteFile, getSignedUrl } from '@/lib/storage';
 import {
-  ITEM_CATEGORIES,
   ITEM_PRIORITIES,
   ITEM_STATUSES,
   ITEM_UNITS,
@@ -294,19 +293,11 @@ export function ItemDialog({
           {...register('description')}
         />
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4">
           <Select label="Ambiente" error={errors.room_id?.message} {...register('room_id')}>
             {rooms.map((r) => (
               <option key={r.id} value={r.id}>
                 {r.name}
-              </option>
-            ))}
-          </Select>
-          <Select label="Categoria" error={errors.category?.message} {...register('category')}>
-            <option value="">Sem categoria</option>
-            {ITEM_CATEGORIES.map((c) => (
-              <option key={c.key} value={c.key}>
-                {c.label}
               </option>
             ))}
           </Select>

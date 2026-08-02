@@ -237,8 +237,15 @@ export function useItemsStats(
 
     const budgetEstimated =
       items?.reduce((sum, i) => sum + (i.estimated_price ? Number(i.estimated_price) : 0), 0) ?? 0;
+    // Only realized purchases count as spent — a paid_price filled in on a
+    // still-planned item is a negotiated estimate, not money out.
+    const isRealized = (s: Item['status']) =>
+      s === 'purchased' || s === 'delivered' || s === 'installed';
     const budgetPaid =
-      items?.reduce((sum, i) => sum + (i.paid_price ? Number(i.paid_price) : 0), 0) ?? 0;
+      items?.reduce(
+        (sum, i) => sum + (isRealized(i.status) && i.paid_price ? Number(i.paid_price) : 0),
+        0
+      ) ?? 0;
     const savings = budgetEstimated - budgetPaid;
 
     const roomMap = new Map(rooms.map((r) => [r.id, r.name]));

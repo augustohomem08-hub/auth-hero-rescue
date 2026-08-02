@@ -3,6 +3,7 @@ import { MoreVertical, Pencil, Trash2, Copy, ArrowRightLeft, ExternalLink, Image
 import { Badge } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { formatCurrency } from '@/lib/utils';
+import { getItemImageSignedUrl } from '@/lib/items';
 import { categoryIcon, priorityLabel, priorityTone, statusLabel, statusTone } from './itemConstants';
 import type { Item } from '@/types/purchases';
 
@@ -30,7 +31,21 @@ export function ItemCard({
 }: ItemCardProps) {
   const Icon = categoryIcon(item.category);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // Resolve the private storage path to a signed URL for the thumbnail.
+  useEffect(() => {
+    let active = true;
+    if (!item.image) {
+      setImageUrl(null);
+      return;
+    }
+    getItemImageSignedUrl(item.image)
+      .then((url) => { if (active) setImageUrl(url); })
+      .catch(() => { if (active) setImageUrl(null); });
+    return () => { active = false; };
+  }, [item.image]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -73,13 +88,17 @@ export function ItemCard({
 
       {/* Thumbnail / icon */}
       <div className="flex w-12 shrink-0 items-start">
-        {item.image ? (
-          <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-lg bg-surface-100 dark:bg-surface-800">
-            <ImageIcon className="h-5 w-5 text-surface-400" />
-          </div>
+        {item.image && imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={item.name}
+            loading="lazy"
+            onError={() => setImageUrl(null)}
+            className="h-12 w-12 rounded-lg object-cover"
+          />
         ) : (
           <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-surface-100 text-surface-400 dark:bg-surface-800">
-            <Icon className="h-5 w-5" />
+            {item.image ? <ImageIcon className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
           </div>
         )}
       </div>
@@ -95,7 +114,7 @@ export function ItemCard({
               type="button"
               aria-label="Opções"
               onClick={() => setMenuOpen((v) => !v)}
-              className="rounded-lg p-1 text-surface-400 opacity-0 transition-opacity hover:bg-surface-100 hover:text-surface-700 group-hover:opacity-100 dark:hover:bg-surface-800 dark:hover:text-surface-200"
+              className="rounded-lg p-1 text-surface-400 opacity-100 transition-opacity hover:bg-surface-100 hover:text-surface-700 lg:opacity-0 lg:group-hover:opacity-100 dark:hover:bg-surface-800 dark:hover:text-surface-200"
             >
               <MoreVertical className="h-4 w-4" />
             </button>
