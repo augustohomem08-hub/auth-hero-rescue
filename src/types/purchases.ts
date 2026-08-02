@@ -70,6 +70,8 @@ export interface Item {
   link: string | null;
   /** Path in the `images` storage bucket; resolve to a signed URL client-side. */
   image: string | null;
+  /** When the "purchase completed" celebration was recorded (fires once). */
+  celebrated_at: string | null;
   created_at: string;
   updated_at: string;
 }

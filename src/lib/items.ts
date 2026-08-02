@@ -13,6 +13,7 @@ import type { Item } from '@/types/purchases';
 const SELECT =
   'id, room_id, name, description, priority, status, notes, sort_order, ' +
   'category, quantity, unit, estimated_price, paid_price, store, link, image, ' +
+  'celebrated_at, ' +
   'created_at, updated_at';
 
 /** Row shape accepted by insert/update (snake_case, optional fields). */
@@ -109,6 +110,16 @@ export async function updateItem(
     .single();
   if (error) throw error;
   return data as unknown as Item;
+}
+
+/** Stamp an item as celebrated so the Jornada entry is created only once. */
+export async function markItemCelebrated(itemId: string): Promise<void> {
+  const { error } = await supabase
+    .from('items')
+    .update({ celebrated_at: new Date().toISOString() })
+    .eq('id', itemId)
+    .is('celebrated_at', null);
+  if (error) throw error;
 }
 
 /** Delete a single item. */
