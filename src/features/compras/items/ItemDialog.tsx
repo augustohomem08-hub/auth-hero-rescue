@@ -7,7 +7,6 @@ import { Modal, Button, Input, Textarea, Select } from '@/components/ui';
 import { useAuth } from '@/contexts/auth-context';
 import { uploadFile, deleteFile, getSignedUrl } from '@/lib/storage';
 import {
-  ITEM_CATEGORIES,
   ITEM_PRIORITIES,
   ITEM_STATUSES,
   ITEM_UNITS,
