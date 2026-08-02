@@ -67,6 +67,10 @@ export function RoomDialog({
   }, [open, room, reset]);
 
   const selectedIcon = watch('icon');
+  const [showMoreIcons, setShowMoreIcons] = useState(
+    ROOM_ICONS_EXTRA.some((p) => p.key === room?.icon)
+  );
+  const visibleIcons = showMoreIcons ? ALL_ROOM_ICONS : ROOM_ICONS;
   const selectedColor = watch('color');
 
   return (
