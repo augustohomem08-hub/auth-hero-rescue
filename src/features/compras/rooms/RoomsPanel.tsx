@@ -8,6 +8,8 @@ import {
   useRooms,
   useUpdateRoom,
 } from './useRooms';
+import { useItems, useItemsStats } from '../items/useItems';
+import { cn } from '@/lib/utils';
 import { RoomCard } from './RoomCard';
 import { RoomDialog } from './RoomDialog';
 import { DeleteRoomDialog } from './DeleteRoomDialog';
@@ -17,6 +19,8 @@ import type { Room } from '@/types/purchases';
 interface RoomsPanelProps {
   selectedRoomId: string | null;
   onSelectRoom: (room: Room) => void;
+  /** Clear the room filter and show every item in the project. */
+  onClearSelection: () => void;
 }
 
 type DialogState =
