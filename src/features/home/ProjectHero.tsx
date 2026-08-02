@@ -61,7 +61,7 @@ export function ProjectHero({ project, greeting }: ProjectHeroProps) {
       </div>
 
       {/* Meta strip */}
-      <div className="grid grid-cols-1 divide-y divide-surface-200/60 px-4 py-4 dark:divide-surface-800 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-6">
+      <div className="grid grid-cols-1 divide-y divide-surface-800 px-4 py-4 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-6">
         <MetaItem
           icon={<Building2 className="h-4 w-4" />}
           label="Apartamento"
