@@ -72,6 +72,7 @@ export function useCreateItem() {
         store: input.store ?? null,
         link: input.link ?? null,
         image: input.image ?? null,
+        celebrated_at: null,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       };
