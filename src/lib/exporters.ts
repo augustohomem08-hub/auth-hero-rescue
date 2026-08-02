@@ -119,3 +119,77 @@ export function exportBackupJson(payload: BackupPayload): void {
   );
   downloadBlob(json, `backup-${stamp()}.json`, 'application/json');
 }
+
+// ──────────────────────────────────────────────────────────────────────
+// Excel (.xlsx) exports — real workbooks via SheetJS, no CSV/BOM tricks
+// ──────────────────────────────────────────────────────────────────────
+
+/** Build and download a single-sheet .xlsx workbook. */
+async function downloadXlsx(
+  sheetName: string,
+  headers: string[],
+  rows: unknown[][],
+  filename: string
+): Promise<void> {
+  const XLSX = await import('xlsx');
+  const worksheet = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+  worksheet['!cols'] = headers.map(() => ({ wch: 18 }));
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+  const buffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' }) as ArrayBuffer;
+  downloadBlob(
+    buffer,
+    filename,
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  );
+}
+
+export async function exportTransactionsXlsx(transactions: Transaction[]): Promise<void> {
+  await downloadXlsx(
+    'Financeiro',
+    ['Data', 'Título', 'Tipo', 'Categoria', 'Valor', 'Descrição', 'Notas', 'Origem'],
+    transactions.map((t) => [
+      t.date,
+      t.title,
+      t.type === 'income' ? 'Receita' : 'Despesa',
+      t.category,
+      Number(t.amount ?? 0),
+      t.description ?? '',
+      t.notes ?? '',
+      t.source_item_id ? 'Compras' : 'Manual',
+    ]),
+    `financeiro-${stamp()}.xlsx`
+  );
+}
+
+export async function exportItemsXlsx(items: Item[], rooms: Room[]): Promise<void> {
+  const roomName = new Map(rooms.map((r) => [r.id, r.name]));
+  await downloadXlsx(
+    'Compras',
+    [
+      'Cômodo',
+      'Item',
+      'Status',
+      'Prioridade',
+      'Quantidade',
+      'Unidade',
+      'Preço estimado',
+      'Preço pago',
+      'Loja',
+      'Link',
+    ],
+    items.map((i) => [
+      roomName.get(i.room_id) ?? '',
+      i.name,
+      i.status,
+      i.priority,
+      Number(i.quantity ?? 0),
+      i.unit ?? '',
+      i.estimated_price != null ? Number(i.estimated_price) : '',
+      i.paid_price != null ? Number(i.paid_price) : '',
+      i.store ?? '',
+      i.link ?? '',
+    ]),
+    `compras-${stamp()}.xlsx`
+  );
+}

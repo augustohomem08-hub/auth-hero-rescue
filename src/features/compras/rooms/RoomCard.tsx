@@ -6,6 +6,8 @@ import type { Room } from '@/types/purchases';
 
 interface RoomCardProps {
   room: Room;
+  /** How many items belong to this room (from the shared items cache). */
+  itemCount: number;
   selected: boolean;
   onSelect: (room: Room) => void;
   onEdit: (room: Room) => void;
@@ -13,7 +15,7 @@ interface RoomCardProps {
 }
 
 /** A selectable room tile with an inline actions menu (edit / delete). */
-export function RoomCard({ room, selected, onSelect, onEdit, onDelete }: RoomCardProps) {
+export function RoomCard({ room, itemCount, selected, onSelect, onEdit, onDelete }: RoomCardProps) {
   const Icon = roomIcon(room.icon);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -56,7 +58,7 @@ export function RoomCard({ room, selected, onSelect, onEdit, onDelete }: RoomCar
           {room.name}
         </span>
         <span className="block text-xs text-surface-400 dark:text-surface-500">
-          Itens em breve
+          {itemCount === 0 ? 'Nenhum item ainda' : `${itemCount} ${itemCount === 1 ? 'item' : 'itens'}`}
         </span>
       </span>
 

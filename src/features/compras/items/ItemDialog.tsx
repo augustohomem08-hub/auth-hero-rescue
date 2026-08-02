@@ -250,7 +250,7 @@ export function ItemDialog({
               <button
                 type="button"
                 onClick={removeImage}
-                className="absolute right-2 top-2 rounded-lg bg-surface-950/50 p-1.5 text-white opacity-0 transition-opacity group-hover:opacity-100"
+                className="absolute right-2 top-2 rounded-lg bg-surface-950/50 p-1.5 text-white opacity-100 transition-opacity lg:opacity-0 lg:group-hover:opacity-100"
                 aria-label="Remover imagem"
               >
                 <X className="h-4 w-4" />

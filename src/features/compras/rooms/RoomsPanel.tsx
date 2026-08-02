@@ -8,6 +8,8 @@ import {
   useRooms,
   useUpdateRoom,
 } from './useRooms';
+import { useItems, useItemsStats } from '../items/useItems';
+import { cn } from '@/lib/utils';
 import { RoomCard } from './RoomCard';
 import { RoomDialog } from './RoomDialog';
 import { DeleteRoomDialog } from './DeleteRoomDialog';
@@ -17,6 +19,8 @@ import type { Room } from '@/types/purchases';
 interface RoomsPanelProps {
   selectedRoomId: string | null;
   onSelectRoom: (room: Room) => void;
+  /** Clear the room filter and show every item in the project. */
+  onClearSelection: () => void;
 }
 
 type DialogState =
@@ -30,10 +34,13 @@ type DialogState =
  * React Query (with realtime + optimistic updates), renders a selectable
  * grid, and hosts the create / edit / delete dialogs.
  */
-export function RoomsPanel({ selectedRoomId, onSelectRoom }: RoomsPanelProps) {
+export function RoomsPanel({ selectedRoomId, onSelectRoom, onClearSelection }: RoomsPanelProps) {
   const { data: active } = useActiveProject();
   const projectId = active?.project.id ?? '';
   const { data: rooms, isLoading, isError, refetch } = useRooms();
+  const { data: items } = useItems();
+  const { byRoom } = useItemsStats(items, rooms ?? []);
+  const countByRoom = new Map(byRoom.map((r) => [r.roomId, r.count]));
   const createRoom = useCreateRoom();
   const updateRoom = useUpdateRoom();
   const deleteRoom = useDeleteRoom();
@@ -117,18 +124,35 @@ export function RoomsPanel({ selectedRoomId, onSelectRoom }: RoomsPanelProps) {
             onRetry={() => refetch()}
           />
         ) : rooms && rooms.length > 0 ? (
-          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+          <>
+            <div className="mb-3 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={onClearSelection}
+                className={cn(
+                  'rounded-full border px-3 py-1.5 text-xs font-medium transition-colors',
+                  selectedRoomId === null
+                    ? 'border-primary-400 bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-200'
+                    : 'border-surface-200 text-surface-600 hover:border-surface-300 dark:border-surface-700 dark:text-surface-300'
+                )}
+              >
+                Todos os itens{items ? ` (${items.length})` : ''}
+              </button>
+            </div>
+            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
             {rooms.map((room) => (
               <RoomCard
                 key={room.id}
                 room={room}
+                itemCount={countByRoom.get(room.id) ?? 0}
                 selected={selectedRoomId === room.id}
                 onSelect={onSelectRoom}
                 onEdit={(r) => setDialog({ kind: 'edit', room: r })}
                 onDelete={(r) => setDialog({ kind: 'delete', room: r })}
               />
             ))}
-          </div>
+            </div>
+          </>
         ) : (
           <EmptyPurchasesState
             icon={<Sofa className="h-7 w-7" />}

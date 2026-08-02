@@ -7,6 +7,7 @@ import { MembersCard } from './MembersCard';
 import { InvitationCard } from './InvitationCard';
 import { RecentActivity } from './RecentActivity';
 import { UpcomingDeadlines } from './UpcomingDeadlines';
+import { RecentlyCompleted } from './RecentlyCompleted';
 
 export function HomePage() {
   const { user } = useAuth();
@@ -32,6 +33,8 @@ export function HomePage() {
       <ProjectHero project={project} greeting={greeting} />
 
       <UpcomingDeadlines />
+
+      <RecentlyCompleted />
 
       <ModuleCards />
 

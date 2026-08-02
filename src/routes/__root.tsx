@@ -1,4 +1,5 @@
 import { QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "sonner";
 import {
   Outlet,
   createRootRouteWithContext,
@@ -115,6 +116,7 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body suppressHydrationWarning>
         {children}
+        <Toaster position="top-center" richColors />
         <Scripts />
       </body>
     </html>
