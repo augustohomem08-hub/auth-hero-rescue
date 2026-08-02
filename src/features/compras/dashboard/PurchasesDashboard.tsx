@@ -11,7 +11,6 @@ import { formatCurrency } from '@/lib/utils';
 import { StatCard } from './StatCard';
 import { DonutChart, type DonutSlice } from './DonutChart';
 import { BarChart } from './BarChart';
-import { categoryLabel } from '../items/itemConstants';
 import { useItemsStats } from '../items/useItems';
 import type { Item, Room } from '@/types/purchases';
 
@@ -41,9 +40,6 @@ export function PurchasesDashboard({ items, rooms }: PurchasesDashboardProps) {
     .slice(0, 6)
     .map((r) => ({ label: r.roomName, value: r.count }));
 
-  const categoryBars = stats.byCategory
-    .slice(0, 6)
-    .map((c) => ({ label: categoryLabel(c.category), value: c.count }));
 
   return (
     <div className="space-y-4">
@@ -125,12 +121,6 @@ export function PurchasesDashboard({ items, rooms }: PurchasesDashboardProps) {
           </div>
         </Card>
 
-        <Card padding="md">
-          <CardHeader title="Por categoria" subtitle="Quantidade de itens" />
-          <div className="mt-4">
-            <BarChart data={categoryBars} color="text-secondary-500" />
-          </div>
-        </Card>
       </div>
 
       {/* Budget summary line */}
