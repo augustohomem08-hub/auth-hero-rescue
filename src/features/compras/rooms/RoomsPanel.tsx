@@ -34,10 +34,13 @@ type DialogState =
  * React Query (with realtime + optimistic updates), renders a selectable
  * grid, and hosts the create / edit / delete dialogs.
  */
-export function RoomsPanel({ selectedRoomId, onSelectRoom }: RoomsPanelProps) {
+export function RoomsPanel({ selectedRoomId, onSelectRoom, onClearSelection }: RoomsPanelProps) {
   const { data: active } = useActiveProject();
   const projectId = active?.project.id ?? '';
   const { data: rooms, isLoading, isError, refetch } = useRooms();
+  const { data: items } = useItems();
+  const { byRoom } = useItemsStats(items, rooms ?? []);
+  const countByRoom = new Map(byRoom.map((r) => [r.roomId, r.count]));
   const createRoom = useCreateRoom();
   const updateRoom = useUpdateRoom();
   const deleteRoom = useDeleteRoom();
