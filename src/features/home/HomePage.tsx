@@ -1,4 +1,5 @@
 import { useAuth } from '@/contexts/auth-context';
+import { nameFromEmail } from '@/lib/profiles';
 import { useActiveProject } from '@/features/onboarding/useProjectMembership';
 import { FullPageLoading, ErrorState } from '@/components/ui';
 import { ProjectHero } from './ProjectHero';
@@ -25,7 +26,11 @@ export function HomePage() {
   }
 
   const { project, membership, members } = active;
-  const greeting = buildGreeting(user?.email);
+  const displayName =
+    (user?.user_metadata?.['display_name'] as string | undefined)?.trim() ||
+    (user?.user_metadata?.['full_name'] as string | undefined)?.trim() ||
+    nameFromEmail(user?.email);
+  const greeting = buildGreeting(displayName);
   const isOwner = membership.role === 'owner';
 
   return (
@@ -52,14 +57,10 @@ export function HomePage() {
   );
 }
 
-/** Greeting using the local part of the authenticated user's email. */
-function buildGreeting(email?: string): string {
+/** Greeting using the user's display name (email-derived name as fallback). */
+function buildGreeting(name?: string): string {
   const hour = new Date().getHours();
   const part = hour < 12 ? 'Bom dia' : hour < 18 ? 'Boa tarde' : 'Boa noite';
-  if (!email) return part;
-  const name = email.split('@')[0];
-  const clean = name
-    .replace(/[._-]+/g, ' ')
-    .replace(/\b\w/g, (c) => c.toUpperCase());
-  return `${part}, ${clean}`;
+  if (!name) return part;
+  return `${part}, ${name}`;
 }

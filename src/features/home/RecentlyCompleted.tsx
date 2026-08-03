@@ -55,6 +55,7 @@ export function RecentlyCompleted() {
                 : 'Compra concluída.',
             date: new Date().toISOString().slice(0, 10),
             is_highlight: true,
+            item_id: item.id,
           });
           await markItemCelebrated(item.id);
           if (!cancelled) toast.success(`🎉 Vocês compraram ${item.name}!`);
