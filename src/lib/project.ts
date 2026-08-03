@@ -134,12 +134,17 @@ export async function updateProject(
     expectedDeliveryDate?: string | null;
   }
 ): Promise<{ project?: Project; error: string | null }> {
-  const payload: Record<string, unknown> = {};
-  if (patch.name !== undefined) payload['name'] = patch.name;
-  if (patch.apartmentName !== undefined) payload['apartment_name'] = patch.apartmentName;
-  if (patch.builderName !== undefined) payload['builder_name'] = patch.builderName;
+  const payload: {
+    name?: string;
+    apartment_name?: string | null;
+    builder_name?: string | null;
+    expected_delivery_date?: string | null;
+  } = {};
+  if (patch.name !== undefined) payload.name = patch.name;
+  if (patch.apartmentName !== undefined) payload.apartment_name = patch.apartmentName;
+  if (patch.builderName !== undefined) payload.builder_name = patch.builderName;
   if (patch.expectedDeliveryDate !== undefined) {
-    payload['expected_delivery_date'] = patch.expectedDeliveryDate;
+    payload.expected_delivery_date = patch.expectedDeliveryDate;
   }
 
   const { data, error } = await supabase
