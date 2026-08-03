@@ -1,6 +1,11 @@
+import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { Pencil } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
 import { nameFromEmail } from '@/lib/profiles';
-import { useActiveProject } from '@/features/onboarding/useProjectMembership';
+import { useActiveProject, projectKeys } from '@/features/onboarding/useProjectMembership';
+import { ProjectDialog, type ProjectFormValues } from '@/features/project/ProjectDialog';
+import { updateProject } from '@/lib/project';
 import { FullPageLoading, ErrorState } from '@/components/ui';
 import { ProjectHero } from './ProjectHero';
 import { ModuleCards } from './ModuleCards';
@@ -12,7 +17,30 @@ import { RecentlyCompleted } from './RecentlyCompleted';
 
 export function HomePage() {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   const { data: active, isLoading, isError, refetch } = useActiveProject();
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+
+  const handleSave = async (values: ProjectFormValues) => {
+    if (!active) return;
+    setSaving(true);
+    setSaveError(null);
+    const { error } = await updateProject(active.project.id, {
+      name: values.name.trim(),
+      apartmentName: values.apartmentName?.trim() || null,
+      builderName: values.builderName?.trim() || null,
+      expectedDeliveryDate: values.expectedDeliveryDate || null,
+    });
+    setSaving(false);
+    if (error) {
+      setSaveError(error);
+      return;
+    }
+    setEditing(false);
+    await queryClient.invalidateQueries({ queryKey: projectKeys.all });
+  };
 
   if (isLoading) return <FullPageLoading label="Carregando seu lar…" />;
   if (isError || !active) {
@@ -35,7 +63,16 @@ export function HomePage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <ProjectHero project={project} greeting={greeting} />
+      <ProjectHero project={project} greeting={greeting} onEdit={() => setEditing(true)} />
+
+      <ProjectDialog
+        open={editing}
+        onClose={() => setEditing(false)}
+        project={project}
+        isSubmitting={saving}
+        serverError={saveError}
+        onSubmit={handleSave}
+      />
 
       <UpcomingDeadlines />
 
