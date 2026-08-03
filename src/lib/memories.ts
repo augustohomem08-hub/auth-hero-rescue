@@ -11,7 +11,7 @@ import type { Memory } from '@/types/jornada';
 
 const SELECT =
   'id, project_id, title, description, date, image_path, is_highlight, ' +
-  'sort_order, created_at, updated_at';
+  'sort_order, item_id, created_at, updated_at';
 
 export interface MemoryInput {
   title: string;
@@ -19,6 +19,8 @@ export interface MemoryInput {
   date?: string;
   is_highlight?: boolean;
   sort_order?: number;
+  /** Links an auto-created celebration memory back to the purchased item. */
+  item_id?: string | null;
 }
 
 /** List all memories for a project, newest date first. */
@@ -50,6 +52,7 @@ export async function createMemory(
       image_path: null,
       is_highlight: input.is_highlight ?? false,
       sort_order: input.sort_order ?? 0,
+      item_id: input.item_id ?? null,
     })
     .select(SELECT)
     .single();
@@ -81,6 +84,7 @@ export async function createMemoryWithImage(
       image_path: path,
       is_highlight: input.is_highlight ?? false,
       sort_order: input.sort_order ?? 0,
+      item_id: input.item_id ?? null,
     })
     .select(SELECT)
     .single();
@@ -106,13 +110,24 @@ export async function updateMemory(
   return data as unknown as Memory;
 }
 
-/** Delete a memory: remove its row first, then the storage image (if any). */
+/**
+ * Delete a memory: remove its row first, then the storage image (if any).
+ * When the memory was auto-created for a completed purchase, the item's
+ * `celebrated_at` stamp is cleared so Home stops showing the achievement
+ * (and the item may celebrate again if re-marked as purchased later).
+ */
 export async function deleteMemory(memory: Memory): Promise<void> {
   const { error } = await supabase
     .from('memories')
     .delete()
     .eq('id', memory.id);
   if (error) throw error;
+  if (memory.item_id) {
+    await supabase
+      .from('items')
+      .update({ celebrated_at: null })
+      .eq('id', memory.item_id);
+  }
   if (memory.image_path) {
     await deleteFile('images', memory.image_path).catch(() => {});
   }

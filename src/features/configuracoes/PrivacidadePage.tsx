@@ -6,7 +6,9 @@ import { PageHeader } from '@/components/PageHeader';
 import { Badge, Button, Card, CardHeader, ErrorState, FullPageLoading, Modal } from '@/components/ui';
 import { useAuth } from '@/contexts/auth-context';
 import { useActiveProject, projectKeys } from '@/features/onboarding/useProjectMembership';
-import { removeMember } from '@/lib/project';
+import { removeMember, updateMemberRole } from '@/lib/project';
+import { displayNameFor } from '@/lib/profiles';
+import { useProfiles } from '@/features/profiles/useProfiles';
 import { formatDate } from '@/lib/utils';
 import type { ProjectMember } from '@/types/project';
 
@@ -27,8 +29,11 @@ export function PrivacidadePage() {
   const queryClient = useQueryClient();
   const { data: active, isLoading, isError, refetch } = useActiveProject();
   const [target, setTarget] = useState<ProjectMember | null>(null);
+  const [promoting, setPromoting] = useState<ProjectMember | null>(null);
+  const [busy, setBusy] = useState(false);
   const [removing, setRemoving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { profiles } = useProfiles((active?.members ?? []).map((m) => m.user_id));
 
   if (isLoading) return <FullPageLoading label="Carregando membros…" />;
   if (isError || !active) {
@@ -43,6 +48,20 @@ export function PrivacidadePage() {
 
   const { members, membership } = active;
   const isOwner = membership.role === 'owner';
+
+  const confirmPromote = async () => {
+    if (!promoting) return;
+    setBusy(true);
+    setError(null);
+    const { error: err } = await updateMemberRole(promoting.id, 'owner');
+    setBusy(false);
+    if (err) {
+      setError(err);
+      return;
+    }
+    setPromoting(null);
+    await queryClient.invalidateQueries({ queryKey: projectKeys.all });
+  };
 
   const confirmRemove = async () => {
     if (!target) return;
@@ -86,6 +105,7 @@ export function PrivacidadePage() {
           {members.map((m) => {
             const owner = m.role === 'owner';
             const self = m.user_id === user?.id;
+            const name = displayNameFor(profiles.get(m.user_id), ROLE_LABEL[m.role] ?? m.role);
             return (
               <li key={m.id} className="flex items-center gap-3 py-3.5 first:pt-0 last:pb-0">
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface-100 text-surface-500 dark:bg-surface-800 dark:text-surface-400">
@@ -93,16 +113,27 @@ export function PrivacidadePage() {
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-surface-900 dark:text-surface-100">
-                    {ROLE_LABEL[m.role] ?? m.role}
+                    {name}
                     {self && ' (você)'}
                   </p>
                   <p className="truncate text-xs text-surface-500 dark:text-surface-400">
-                    Entrou em {formatDate(m.joined_at ?? m.invited_at)}
+                    {ROLE_LABEL[m.role] ?? m.role} · Entrou em{' '}
+                    {formatDate(m.joined_at ?? m.invited_at)}
                   </p>
                 </div>
                 <Badge tone={m.invitation_status === 'accepted' ? 'success' : 'warning'}>
                   {m.invitation_status === 'accepted' ? 'Ativo' : 'Convite pendente'}
                 </Badge>
+                {isOwner && !owner && (
+                  <button
+                    type="button"
+                    onClick={() => setPromoting(m)}
+                    aria-label="Tornar dono"
+                    className="shrink-0 rounded-lg p-2 text-accent-600 transition-colors hover:bg-accent-50 dark:text-accent-400 dark:hover:bg-accent-950"
+                  >
+                    <Crown className="h-4 w-4" />
+                  </button>
+                )}
                 {isOwner && !owner && (
                   <button
                     type="button"
@@ -130,6 +161,33 @@ export function PrivacidadePage() {
           privadas de armazenamento e são acessados por links temporários.
         </p>
       </Card>
+
+      <Modal
+        open={!!promoting}
+        onClose={() => setPromoting(null)}
+        title="Tornar dono do projeto"
+        description="A pessoa passará a ter controle total sobre o projeto."
+        footer={
+          <>
+            <Button variant="ghost" size="md" onClick={() => setPromoting(null)} disabled={busy}>
+              Cancelar
+            </Button>
+            <Button variant="primary" size="md" isLoading={busy} onClick={confirmPromote}>
+              Tornar dono
+            </Button>
+          </>
+        }
+      >
+        <p className="text-sm text-surface-600 dark:text-surface-300">
+          Donos podem editar o projeto, gerar novos códigos de convite e remover membros.
+          Vocês dois continuarão como donos.
+        </p>
+        {error && (
+          <p className="mt-3 rounded-lg border border-danger-300 bg-danger-100 px-3 py-2 text-sm font-medium text-danger-900 dark:border-danger-700 dark:bg-danger-900/40 dark:text-danger-100">
+            {error}
+          </p>
+        )}
+      </Modal>
 
       <Modal
         open={!!target}

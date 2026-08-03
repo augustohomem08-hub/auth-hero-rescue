@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Building2, CalendarDays, Home, Heart } from 'lucide-react';
+import { Building2, CalendarDays, Home, Heart, Pencil } from 'lucide-react';
 import type { Project } from '@/types/project';
 import { formatCountdown, formatDeliveryDate, getCountdown } from '@/lib/dateUtils';
 import { getSignedUrl } from '@/lib/storage';
@@ -7,9 +7,11 @@ import { getSignedUrl } from '@/lib/storage';
 interface ProjectHeroProps {
   project: Project;
   greeting: string;
+  /** Opens the "Editar projeto" dialog. */
+  onEdit?: () => void;
 }
 
-export function ProjectHero({ project, greeting }: ProjectHeroProps) {
+export function ProjectHero({ project, greeting, onEdit }: ProjectHeroProps) {
   const [coverUrl, setCoverUrl] = useState<string | null>(null);
   const countdown = getCountdown(project.expected_delivery_date);
 
@@ -55,6 +57,16 @@ export function ProjectHero({ project, greeting }: ProjectHeroProps) {
           <div className="flex items-center gap-2 text-white/80">
             <Home className="h-4 w-4" />
             <span className="text-xs font-medium uppercase tracking-wide">Projeto</span>
+            {onEdit && (
+              <button
+                type="button"
+                onClick={onEdit}
+                aria-label="Editar projeto"
+                className="rounded-lg p-1 text-white/80 transition-colors hover:bg-white/15 hover:text-white"
+              >
+                <Pencil className="h-3.5 w-3.5" />
+              </button>
+            )}
           </div>
           <h2 className="mt-1 text-2xl font-semibold text-white sm:text-3xl">{project.name}</h2>
         </div>

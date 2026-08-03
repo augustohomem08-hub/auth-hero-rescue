@@ -3,8 +3,6 @@ import {
   TrendingDown,
   Scale,
   PiggyBank,
-  Percent,
-  Receipt,
   ArrowDownCircle,
   ArrowUpCircle,
 } from 'lucide-react';
@@ -76,20 +74,6 @@ export function FinanceDashboard({ transactions }: FinanceDashboardProps) {
 
       {/* Stat tiles — second row */}
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <StatCard
-          label="Percentual utilizado"
-          value={`${stats.usedPct}%`}
-          icon={<Percent className="h-5 w-5" />}
-          tone={stats.usedPct > 100 ? 'danger' : stats.usedPct > 80 ? 'warning' : 'accent'}
-          hint={stats.budget === 0 ? 'Sem receitas' : `${statCur(stats.spent)} de ${statCur(stats.budget)}`}
-        />
-        <StatCard
-          label="Ticket médio"
-          value={stats.expenseCount > 0 ? statCur(stats.avgTicket) : '—'}
-          icon={<Receipt className="h-5 w-5" />}
-          tone="neutral"
-          hint="Por despesa"
-        />
         <StatCard
           label="Despesas"
           value={stats.expenseCount}

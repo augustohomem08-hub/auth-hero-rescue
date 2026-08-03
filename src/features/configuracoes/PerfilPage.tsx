@@ -5,6 +5,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { Button, Card, CardHeader, Input } from '@/components/ui';
 import { useAuth } from '@/contexts/auth-context';
 import { supabase } from '@/lib/supabase';
+import { upsertOwnProfile } from '@/lib/profiles';
 import { formatDate } from '@/lib/utils';
 
 /**
@@ -31,6 +32,13 @@ export function PerfilPage() {
     const { error } = await supabase.auth.updateUser({
       data: { display_name: name.trim() },
     });
+    if (!error && user) {
+      await upsertOwnProfile({
+        id: user.id,
+        displayName: name.trim(),
+        email: user.email ?? null,
+      });
+    }
     setSaving(false);
     setFeedback(
       error

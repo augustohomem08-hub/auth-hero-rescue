@@ -24,21 +24,21 @@ const ICON_TONES: Record<NonNullable<StatCardProps['tone']>, string> = {
 /** Compact metric tile for the dashboard. */
 export function StatCard({ label, value, icon, hint, tone = 'neutral' }: StatCardProps) {
   return (
-    <Card padding="md" className="flex items-center gap-3.5">
+    <Card padding="md" className="flex items-center gap-2.5 sm:gap-3.5">
       {icon && (
         <span className={cn('flex h-10 w-10 shrink-0 items-center justify-center rounded-xl', ICON_TONES[tone])}>
           {icon}
         </span>
       )}
-      <div className="min-w-0">
-        <p className="truncate text-xs font-medium text-surface-500 dark:text-surface-400">
+      <div className="min-w-0 flex-1">
+        <p className="text-xs font-medium leading-tight text-surface-500 dark:text-surface-400">
           {label}
         </p>
-        <p className="truncate text-lg font-semibold text-surface-900 dark:text-surface-100">
+        <p className="break-words text-base font-semibold leading-tight text-surface-900 tabular-nums sm:text-lg dark:text-surface-100">
           {value}
         </p>
         {hint && (
-          <p className="truncate text-xs text-surface-400 dark:text-surface-500">{hint}</p>
+          <p className="text-xs leading-tight text-surface-400 dark:text-surface-500">{hint}</p>
         )}
       </div>
     </Card>

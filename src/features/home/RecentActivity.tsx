@@ -1,6 +1,8 @@
 import { CalendarCheck, UserPlus, type LucideIcon } from 'lucide-react';
 import { Card, CardHeader } from '@/components/ui';
 import { formatDate } from '@/lib/utils';
+import { displayNameFor } from '@/lib/profiles';
+import { useProfiles } from '@/features/profiles/useProfiles';
 import type { Project, ProjectMember } from '@/types/project';
 
 interface RecentActivityProps {
@@ -24,6 +26,7 @@ interface ActivityItem {
 }
 
 export function RecentActivity({ project, members }: RecentActivityProps) {
+  const { profiles } = useProfiles(members.map((m) => m.user_id));
   const items: ActivityItem[] = [];
 
   items.push({
@@ -39,12 +42,13 @@ export function RecentActivity({ project, members }: RecentActivityProps) {
     .filter((m) => m.joined_at)
     .forEach((m) => {
       const isOwner = m.role === 'owner';
+      const person = displayNameFor(profiles.get(m.user_id), roleLabel(m.role));
       items.push({
         id: `member-${m.id}`,
         icon: UserPlus,
         tone: 'secondary',
-        title: isOwner ? 'Dono adicionado' : 'Membro entrou no projeto',
-        detail: isOwner ? 'Início do lar compartilhado' : roleLabel(m.role),
+        title: `${person} entrou no projeto`,
+        detail: isOwner ? 'Dono do projeto' : roleLabel(m.role),
         timestamp: m.joined_at as string,
       });
     });

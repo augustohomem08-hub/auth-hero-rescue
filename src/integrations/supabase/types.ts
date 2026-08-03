@@ -146,6 +146,7 @@ export type Database = {
           id: string
           image_path: string | null
           is_highlight: boolean
+          item_id: string | null
           project_id: string
           sort_order: number
           title: string
@@ -158,6 +159,7 @@ export type Database = {
           id?: string
           image_path?: string | null
           is_highlight?: boolean
+          item_id?: string | null
           project_id: string
           sort_order?: number
           title: string
@@ -170,12 +172,20 @@ export type Database = {
           id?: string
           image_path?: string | null
           is_highlight?: boolean
+          item_id?: string | null
           project_id?: string
           sort_order?: number
           title?: string
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "memories_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "items"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "memories_project_id_fkey"
             columns: ["project_id"]
@@ -231,6 +241,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       project_members: {
         Row: {
