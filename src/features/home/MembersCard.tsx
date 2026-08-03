@@ -2,14 +2,18 @@ import { Crown, UserPlus, Users } from 'lucide-react';
 import { Card, CardHeader, Badge } from '@/components/ui';
 import type { ProjectMember } from '@/types/project';
 import { formatDate } from '@/lib/utils';
+import { displayNameFor } from '@/lib/profiles';
+import { useProfiles } from '@/features/profiles/useProfiles';
 
 interface MembersCardProps {
   members: ProjectMember[];
 }
 
-/** Initials from a user id (no display name stored yet) — graceful fallback. */
-function initialsFor(userId: string): string {
-  // user ids are UUIDs; show a short hashed-looking pair as a placeholder
+/** Initials from a person's name, falling back to a stable id-derived pair. */
+function initialsFor(name: string, userId: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+  if (parts.length === 1 && parts[0].length > 0) return parts[0].slice(0, 2).toUpperCase();
   const clean = userId.replace(/-/g, '');
   const a = clean.charCodeAt(0) % 26;
   const b = clean.charCodeAt(1) % 26;
@@ -30,6 +34,7 @@ function colorFor(userId: string): string {
 }
 
 export function MembersCard({ members }: MembersCardProps) {
+  const { profiles } = useProfiles(members.map((m) => m.user_id));
   const owner = members.find((m) => m.role === 'owner');
   const others = members.filter((m) => m.role !== 'owner');
   const ordered = owner ? [owner, ...others] : members;
@@ -49,6 +54,7 @@ export function MembersCard({ members }: MembersCardProps) {
       <ul className="mt-4 space-y-2.5">
         {ordered.map((m) => {
           const isOwner = m.role === 'owner';
+          const name = displayNameFor(profiles.get(m.user_id), roleLabel(m.role));
           return (
             <li
               key={m.id}
@@ -60,19 +66,19 @@ export function MembersCard({ members }: MembersCardProps) {
                   colorFor(m.user_id)
                 }
               >
-                {initialsFor(m.user_id)}
+                {initialsFor(name, m.user_id)}
               </span>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
                   <p className="truncate text-sm font-medium text-surface-900 dark:text-surface-100">
-                    {isOwner ? 'Dono do projeto' : roleLabel(m.role)}
+                    {name}
                   </p>
                   {isOwner && (
                     <Crown className="h-3.5 w-3.5 shrink-0 text-accent-500" aria-hidden />
                   )}
                 </div>
                 <p className="truncate text-xs text-surface-500 dark:text-surface-400">
-                  Entrou em {formatDate(m.joined_at ?? m.invited_at)}
+                  {isOwner ? 'Dono do projeto' : roleLabel(m.role)} · Entrou em {formatDate(m.joined_at ?? m.invited_at)}
                 </p>
               </div>
               <Badge tone={isOwner ? 'accent' : 'neutral'}>
