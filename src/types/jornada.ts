@@ -14,6 +14,8 @@ export interface Memory {
   /** Path in the private `images` bucket; null = text-only memory. */
   image_path: string | null;
   is_highlight: boolean;
+  /** Set when the memory was auto-created from a completed purchase. */
+  item_id: string | null;
   sort_order: number;
   created_at: string;
   updated_at: string;
