@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import type { AuthError, Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { queryClient } from '@/lib/queryClient';
+import { upsertOwnProfile } from '@/lib/profiles';
 import { AuthContext } from './auth-context';
 import type { AuthStatus } from './auth-context';
 
@@ -24,6 +25,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!mounted) return;
       setSession(data.session);
       setStatus(data.session ? 'authenticated' : 'unauthenticated');
+      if (data.session?.user) void syncProfile(data.session.user);
     })();
 
     // Subscribe to auth state changes. The callback runs synchronously during
@@ -32,6 +34,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       (async () => {
         setSession(next);
         setStatus(next ? 'authenticated' : 'unauthenticated');
+        if (next?.user) void syncProfile(next.user);
       })();
     });
 
@@ -40,6 +43,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       sub.subscription.unsubscribe();
     };
   }, []);
+
+  /**
+   * Mirror the signed-in user's name/e-mail into `public.profiles` so other
+   * project members can display a real name instead of a role label.
+   */
+  async function syncProfile(u: User) {
+    const displayName =
+      (u.user_metadata?.['display_name'] as string | undefined) ??
+      (u.user_metadata?.['full_name'] as string | undefined) ??
+      null;
+    try {
+      await upsertOwnProfile({ id: u.id, displayName, email: u.email ?? null });
+    } catch {
+      // Non-critical: the directory is a convenience, not a requirement.
+    }
+  }
 
   const signUp = useCallback(async (email: string, password: string) => {
     const { data, error } = await supabase.auth.signUp({ email, password });

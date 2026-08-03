@@ -124,6 +124,51 @@ export async function createProject(opts: {
   return { project: project as Project, error: null };
 }
 
+/** Update the editable identity fields of a project (owner or member). */
+export async function updateProject(
+  projectId: string,
+  patch: {
+    name?: string;
+    apartmentName?: string | null;
+    builderName?: string | null;
+    expectedDeliveryDate?: string | null;
+  }
+): Promise<{ project?: Project; error: string | null }> {
+  const payload: Record<string, unknown> = {};
+  if (patch.name !== undefined) payload['name'] = patch.name;
+  if (patch.apartmentName !== undefined) payload['apartment_name'] = patch.apartmentName;
+  if (patch.builderName !== undefined) payload['builder_name'] = patch.builderName;
+  if (patch.expectedDeliveryDate !== undefined) {
+    payload['expected_delivery_date'] = patch.expectedDeliveryDate;
+  }
+
+  const { data, error } = await supabase
+    .from('projects')
+    .update(payload)
+    .eq('id', projectId)
+    .select(
+      'id, name, apartment_name, builder_name, expected_delivery_date, cover_image, created_by, created_at, updated_at, invitation_code, invitation_code_updated_at'
+    )
+    .maybeSingle();
+
+  if (error || !data) {
+    return { error: error?.message ?? 'Falha ao salvar o projeto.' };
+  }
+  return { project: data as Project, error: null };
+}
+
+/** Change a member's role (owner-only, enforced by RLS). */
+export async function updateMemberRole(
+  memberId: string,
+  role: ProjectRole
+): Promise<{ error: string | null }> {
+  const { error } = await supabase
+    .from('project_members')
+    .update({ role })
+    .eq('id', memberId);
+  return { error: error ? error.message : null };
+}
+
 /** Invite a member to a project. Caller must be an owner of that project. */
 export async function inviteMember(opts: {
   projectId: string;
