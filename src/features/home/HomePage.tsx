@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { Pencil } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
 import { nameFromEmail } from '@/lib/profiles';
 import { useActiveProject, projectKeys } from '@/features/onboarding/useProjectMembership';
