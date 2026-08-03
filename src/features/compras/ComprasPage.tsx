@@ -19,8 +19,10 @@ import type { Room } from '@/types/purchases';
  * refetches and is cleared automatically if the room is deleted.
  */
 export function ComprasPage() {
-  const { data: rooms } = useRooms();
-  const { data: items } = useItems();
+  const roomsQuery = useRooms();
+  const itemsQuery = useItems();
+  const rooms = roomsQuery.data;
+  const items = itemsQuery.data;
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
 
   // Keep selection valid across realtime updates: if the selected room is
@@ -46,7 +48,11 @@ export function ComprasPage() {
         ]}
       />
 
-      <PurchasesDashboard items={items} rooms={rooms ?? []} />
+      <PurchasesDashboard
+        items={items}
+        rooms={rooms ?? []}
+        isReady={roomsQuery.isSuccess && itemsQuery.isSuccess}
+      />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="lg:col-span-1">
