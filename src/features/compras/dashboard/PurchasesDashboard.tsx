@@ -1,11 +1,4 @@
-import {
-  Package,
-  ShoppingCart,
-  Clock,
-  Wallet,
-  PiggyBank,
-  TrendingUp,
-} from 'lucide-react';
+import { Package, ShoppingCart, Clock, TrendingUp } from 'lucide-react';
 import { Card, CardHeader } from '@/components/ui';
 import { formatCurrency } from '@/lib/utils';
 import { StatCard } from './StatCard';
@@ -17,16 +10,16 @@ import type { Item, Room } from '@/types/purchases';
 interface PurchasesDashboardProps {
   items: Item[] | undefined;
   rooms: Room[];
+  /** True only when both the items and rooms queries have loaded. */
+  isReady?: boolean;
 }
-
-const statCur = formatCurrency;
 
 /**
  * Real indicators for the Purchases module, all derived from the cached item
- * list (no extra network round-trip). Shows progress donut, budget numbers,
- * and per-room / per-category breakdowns.
+ * list (no extra network round-trip). Budget numbers intentionally live only
+ * in the summary bar at the bottom to avoid duplicating them in the tiles.
  */
-export function PurchasesDashboard({ items, rooms }: PurchasesDashboardProps) {
+export function PurchasesDashboard({ items, rooms, isReady = true }: PurchasesDashboardProps) {
   const stats = useItemsStats(items, rooms);
 
   const donutSlices: DonutSlice[] = [
@@ -39,7 +32,6 @@ export function PurchasesDashboard({ items, rooms }: PurchasesDashboardProps) {
     .sort((a, b) => b.count - a.count)
     .slice(0, 6)
     .map((r) => ({ label: r.roomName, value: r.count }));
-
 
   return (
     <div className="space-y-4">
@@ -72,37 +64,8 @@ export function PurchasesDashboard({ items, rooms }: PurchasesDashboardProps) {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <StatCard
-          label="Orçamento previsto"
-          value={statCur(stats.budgetEstimated)}
-          icon={<Wallet className="h-5 w-5" />}
-          tone="secondary"
-        />
-        <StatCard
-          label="Orçamento realizado"
-          value={statCur(stats.budgetPaid)}
-          icon={<ShoppingCart className="h-5 w-5" />}
-          tone="primary"
-        />
-        <StatCard
-          label="Economia"
-          value={statCur(stats.savings)}
-          icon={<PiggyBank className="h-5 w-5" />}
-          tone={stats.savings >= 0 ? 'success' : 'danger'}
-          hint={stats.savings >= 0 ? 'Gasto abaixo do previsto' : 'Acima do previsto'}
-        />
-        <StatCard
-          label="Ticket médio"
-          value={stats.total > 0 ? statCur(stats.budgetPaid / stats.total) : '—'}
-          icon={<Wallet className="h-5 w-5" />}
-          tone="neutral"
-          hint="Por item pago"
-        />
-      </div>
-
       {/* Charts */}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Card padding="md">
           <CardHeader title="Progresso" subtitle="Itens comprados vs. pendentes" />
           <div className="mt-4 flex justify-center">
@@ -117,10 +80,15 @@ export function PurchasesDashboard({ items, rooms }: PurchasesDashboardProps) {
         <Card padding="md">
           <CardHeader title="Por ambiente" subtitle="Quantidade de itens" />
           <div className="mt-4">
-            <BarChart data={roomBars} color="text-primary-500" />
+            {isReady ? (
+              <BarChart data={roomBars} color="text-primary-500" />
+            ) : (
+              <p className="py-6 text-center text-sm text-surface-500 dark:text-surface-400">
+                Carregando ambientes…
+              </p>
+            )}
           </div>
         </Card>
-
       </div>
 
       {/* Budget summary line */}
