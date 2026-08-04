@@ -31,6 +31,7 @@ export function HomePage() {
       apartmentName: values.apartmentName?.trim() || null,
       builderName: values.builderName?.trim() || null,
       expectedDeliveryDate: values.expectedDeliveryDate || null,
+      coverImage: values.coverImage,
     });
     setSaving(false);
     if (error) {
