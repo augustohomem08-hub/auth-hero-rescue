@@ -1,4 +1,4 @@
-import { Crown, UserPlus, Users } from 'lucide-react';
+import { Crown, Users } from 'lucide-react';
 import { Card, CardHeader, Badge } from '@/components/ui';
 import type { ProjectMember } from '@/types/project';
 import { formatDate } from '@/lib/utils';
