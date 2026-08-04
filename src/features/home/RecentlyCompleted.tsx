@@ -4,7 +4,7 @@ import { PartyPopper, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Card, CardHeader } from '@/components/ui';
 import { formatCurrency, formatDate } from '@/lib/utils';
-import { markItemCelebrated } from '@/lib/items';
+import { markItemCelebrated, clearItemCelebration } from '@/lib/items';
 import { createMemory, deleteMemory, listMemoriesForProject } from '@/lib/memories';
 import { useItems, itemsKeys } from '@/features/compras/items/useItems';
 import { useActiveProject } from '@/features/onboarding/useProjectMembership';
@@ -83,7 +83,7 @@ export function RecentlyCompleted() {
       if (linked) {
         await deleteMemory(linked);
       } else {
-        await markItemCelebrated(itemId, null);
+        await clearItemCelebration(itemId);
       }
       queryClient.invalidateQueries({ queryKey: itemsKeys.all });
       queryClient.invalidateQueries({ queryKey: ['memories'] });
