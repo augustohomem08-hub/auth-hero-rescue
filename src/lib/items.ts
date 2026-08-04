@@ -122,6 +122,15 @@ export async function markItemCelebrated(itemId: string): Promise<void> {
   if (error) throw error;
 }
 
+/** Clear a celebration stamp so the achievement leaves the Home card. */
+export async function clearItemCelebration(itemId: string): Promise<void> {
+  const { error } = await supabase
+    .from('items')
+    .update({ celebrated_at: null })
+    .eq('id', itemId);
+  if (error) throw error;
+}
+
 /** Delete a single item. */
 export async function deleteItem(itemId: string): Promise<void> {
   const { error } = await supabase.from('items').delete().eq('id', itemId);

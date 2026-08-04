@@ -1,4 +1,4 @@
-import { Crown, UserPlus, Users } from 'lucide-react';
+import { Crown, Users } from 'lucide-react';
 import { Card, CardHeader, Badge } from '@/components/ui';
 import type { ProjectMember } from '@/types/project';
 import { formatDate } from '@/lib/utils';
@@ -88,16 +88,6 @@ export function MembersCard({ members }: MembersCardProps) {
           );
         })}
       </ul>
-
-      <div className="mt-4 flex items-center justify-between rounded-xl border border-dashed border-surface-300 px-3.5 py-3 dark:border-surface-700">
-        <p className="text-xs text-surface-500 dark:text-surface-400">
-          Convide parceiros, engenheiros ou arquitetos
-        </p>
-        <span className="inline-flex items-center gap-1 text-xs font-medium text-primary-600 dark:text-primary-300">
-          <UserPlus className="h-3.5 w-3.5" />
-          Em breve
-        </span>
-      </div>
     </Card>
   );
 }

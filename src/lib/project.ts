@@ -132,6 +132,7 @@ export async function updateProject(
     apartmentName?: string | null;
     builderName?: string | null;
     expectedDeliveryDate?: string | null;
+    coverImage?: string | null;
   }
 ): Promise<{ project?: Project; error: string | null }> {
   const payload: {
@@ -139,6 +140,7 @@ export async function updateProject(
     apartment_name?: string | null;
     builder_name?: string | null;
     expected_delivery_date?: string | null;
+    cover_image?: string | null;
   } = {};
   if (patch.name !== undefined) payload.name = patch.name;
   if (patch.apartmentName !== undefined) payload.apartment_name = patch.apartmentName;
@@ -146,6 +148,7 @@ export async function updateProject(
   if (patch.expectedDeliveryDate !== undefined) {
     payload.expected_delivery_date = patch.expectedDeliveryDate;
   }
+  if (patch.coverImage !== undefined) payload.cover_image = patch.coverImage;
 
   const { data, error } = await supabase
     .from('projects')

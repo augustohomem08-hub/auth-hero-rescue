@@ -455,6 +455,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_access_storage_path: {
+        Args: { p_bucket: string; p_name: string }
+        Returns: boolean
+      }
       gen_invitation_code: { Args: never; Returns: string }
       insert_invited_member: {
         Args: { p_project_id: string; p_user_id: string }
