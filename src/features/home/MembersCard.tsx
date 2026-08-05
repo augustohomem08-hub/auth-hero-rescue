@@ -35,9 +35,9 @@ function colorFor(userId: string): string {
 
 export function MembersCard({ members }: MembersCardProps) {
   const { profiles } = useProfiles(members.map((m) => m.user_id));
-  const owner = members.find((m) => m.role === 'owner');
-  const others = members.filter((m) => m.role !== 'owner');
-  const ordered = owner ? [owner, ...others] : members;
+  const ordered = [...members].sort(
+    (a, b) => Number(b.role === 'owner') - Number(a.role === 'owner'),
+  );
 
   return (
     <Card padding="lg">
