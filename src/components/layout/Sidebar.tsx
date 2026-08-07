@@ -14,7 +14,7 @@ export function Sidebar() {
         </span>
         <div className="min-w-0">
           <p className="truncate text-sm font-semibold text-surface-900 dark:text-surface-100">
-            Nosso Primeiro Lar
+            Nosso Lar
           </p>
           <p className="truncate text-xs text-surface-500 dark:text-surface-400">
             🏡 Construindo juntos ❤️

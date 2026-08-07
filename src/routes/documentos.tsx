@@ -8,12 +8,12 @@ export const Route = createFileRoute("/documentos")({
   beforeLoad: requireAuth,
   head: () => ({
     meta: [
-      { title: "Documentos · Nosso Primeiro Lar" },
+      { title: "Documentos · Nosso Lar" },
       {
         name: "description",
         content: "Guarde contratos, comprovantes e documentos importantes do imóvel.",
       },
-      { property: "og:title", content: "Documentos · Nosso Primeiro Lar" },
+      { property: "og:title", content: "Documentos · Nosso Lar" },
       {
         property: "og:description",
         content: "Guarde contratos, comprovantes e documentos importantes do imóvel.",

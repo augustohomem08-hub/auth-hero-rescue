@@ -18,7 +18,7 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
             </span>
             <div>
               <p className="text-sm font-semibold text-surface-900 dark:text-surface-100">
-                Nosso Primeiro Lar
+                Nosso Lar
               </p>
               <p className="text-xs text-surface-500 dark:text-surface-400">Todos os módulos</p>
             </div>

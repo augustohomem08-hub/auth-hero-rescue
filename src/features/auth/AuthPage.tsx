@@ -48,7 +48,7 @@ export function AuthPage() {
             <Home className="h-7 w-7" />
           </span>
           <h1 className="mt-4 text-2xl font-semibold text-surface-900 dark:text-surface-100">
-            Nosso Primeiro Lar
+            Nosso Lar
           </h1>
           <p className="mt-1 text-sm text-surface-500 dark:text-surface-400">
             {tab === 'signin' ? 'Entre para continuar.' : 'Crie sua conta para começar.'}

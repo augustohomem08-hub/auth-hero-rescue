@@ -8,12 +8,12 @@ export const Route = createFileRoute("/cronograma")({
   beforeLoad: requireAuth,
   head: () => ({
     meta: [
-      { title: "Cronograma · Nosso Primeiro Lar" },
+      { title: "Cronograma · Nosso Lar" },
       {
         name: "description",
         content: "Acompanhe marcos e prazos importantes da jornada até a mudança.",
       },
-      { property: "og:title", content: "Cronograma · Nosso Primeiro Lar" },
+      { property: "og:title", content: "Cronograma · Nosso Lar" },
       {
         property: "og:description",
         content: "Acompanhe marcos e prazos importantes da jornada até a mudança.",
