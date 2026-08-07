@@ -62,7 +62,7 @@ export function OnboardingPage() {
             <Home className="h-7 w-7" />
           </span>
           <h1 className="mt-4 text-2xl font-semibold text-surface-900 dark:text-surface-100">
-            Nosso Primeiro Lar
+            Nosso Lar
           </h1>
           <p className="mt-1 text-sm text-surface-500 dark:text-surface-400">
             {user?.email ? `Olá, ${user.email}` : 'Bem-vindo!'} Que tal começar a organizar seu lar?

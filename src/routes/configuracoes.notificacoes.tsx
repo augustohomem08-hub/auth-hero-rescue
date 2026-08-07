@@ -6,12 +6,12 @@ export const Route = createFileRoute("/configuracoes/notificacoes")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Notificações · Nosso Primeiro Lar" },
+      { title: "Notificações · Nosso Lar" },
       {
         name: "description",
         content: "Escolha quais lembretes de prazos aparecem dentro do aplicativo.",
       },
-      { property: "og:title", content: "Notificações · Nosso Primeiro Lar" },
+      { property: "og:title", content: "Notificações · Nosso Lar" },
       {
         property: "og:description",
         content: "Escolha quais lembretes de prazos aparecem dentro do aplicativo.",

@@ -8,13 +8,13 @@ export const Route = createFileRoute("/")({
   beforeLoad: requireAuth,
   head: () => ({
     meta: [
-      { title: "Início · Nosso Primeiro Lar" },
+      { title: "Início · Nosso Lar" },
       {
         name: "description",
         content:
           "Acompanhe compras, finanças, cronograma e memórias do seu primeiro lar em um só lugar.",
       },
-      { property: "og:title", content: "Início · Nosso Primeiro Lar" },
+      { property: "og:title", content: "Início · Nosso Lar" },
       {
         property: "og:description",
         content:

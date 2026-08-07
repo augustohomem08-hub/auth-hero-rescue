@@ -6,12 +6,12 @@ export const Route = createFileRoute("/configuracoes/")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Ajustes · Nosso Primeiro Lar" },
+      { title: "Ajustes · Nosso Lar" },
       {
         name: "description",
         content: "Gerencie o projeto, os membros convidados e as preferências da conta.",
       },
-      { property: "og:title", content: "Ajustes · Nosso Primeiro Lar" },
+      { property: "og:title", content: "Ajustes · Nosso Lar" },
       {
         property: "og:description",
         content: "Gerencie o projeto, os membros convidados e as preferências da conta.",

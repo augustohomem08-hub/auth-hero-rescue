@@ -8,12 +8,12 @@ export const Route = createFileRoute("/jornada")({
   beforeLoad: requireAuth,
   head: () => ({
     meta: [
-      { title: "Nossa Jornada · Nosso Primeiro Lar" },
+      { title: "Nossa Jornada · Nosso Lar" },
       {
         name: "description",
         content: "Registre memórias e fotos de cada etapa da conquista do lar de vocês.",
       },
-      { property: "og:title", content: "Nossa Jornada · Nosso Primeiro Lar" },
+      { property: "og:title", content: "Nossa Jornada · Nosso Lar" },
       {
         property: "og:description",
         content: "Registre memórias e fotos de cada etapa da conquista do lar de vocês.",

@@ -8,12 +8,12 @@ export const Route = createFileRoute("/financeiro")({
   beforeLoad: requireAuth,
   head: () => ({
     meta: [
-      { title: "Financeiro · Nosso Primeiro Lar" },
+      { title: "Financeiro · Nosso Lar" },
       {
         name: "description",
         content: "Controle receitas, despesas e o saldo do projeto do seu primeiro lar.",
       },
-      { property: "og:title", content: "Financeiro · Nosso Primeiro Lar" },
+      { property: "og:title", content: "Financeiro · Nosso Lar" },
       {
         property: "og:description",
         content: "Controle receitas, despesas e o saldo do projeto do seu primeiro lar.",

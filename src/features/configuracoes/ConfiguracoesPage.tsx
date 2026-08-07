@@ -158,7 +158,7 @@ export function ConfiguracoesPage() {
         <div className="flex items-center gap-3 p-5">
           <Heart className="h-8 w-8 shrink-0" />
           <div>
-            <p className="text-sm font-semibold">Nosso Primeiro Lar</p>
+            <p className="text-sm font-semibold">Nosso Lar</p>
             <p className="text-xs text-primary-100/90">Versão 0.1.0 — fundação do projeto</p>
           </div>
         </div>

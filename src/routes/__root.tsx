@@ -64,12 +64,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content: "width=device-width, initial-scale=1, viewport-fit=cover",
       },
       { name: "theme-color", content: "#C4623C" },
-      { title: "Nosso Primeiro Lar" },
+      { title: "Nosso Lar" },
       {
         name: "description",
         content: "Organize a compra do seu primeiro lar com quem você ama.",
       },
-      { property: "og:title", content: "Nosso Primeiro Lar" },
+      { property: "og:title", content: "Nosso Lar" },
       {
         property: "og:description",
         content: "Organize a compra do seu primeiro lar com quem você ama.",
